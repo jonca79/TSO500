@@ -1,0 +1,22 @@
+{
+    "__default__": {
+        "queue": "core",
+        "time": "2:00:00",
+        "partition": "core",
+        "name": "JOBNAME.{rule}.{wildcards}",
+        "output": "logs/cluster/{rule}.{wildcards}.out",
+        "error": "logs/cluster/{rule}.{wildcards}.err",
+        "n": 1
+    },
+    "Call_cnv": {"n": 8},
+    "STAR_arrbia": {"n": 6,
+                    "time": "4:00:00"},
+    "demultiplex": {"n": 16},
+    "fix_fastq_run": {"n": 2},
+    "run_bcbio" : {"time" : "48:00:00"},
+    "run_TSO500" : {"n" : 16,
+                    "time" : "32:00:00"},
+    "run_TST170" : {"n" : 16,
+                    "time" : "24:00:00"},
+    "ffpe_filter" : {"n" : 4}
+}
