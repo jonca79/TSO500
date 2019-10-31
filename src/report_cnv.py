@@ -206,7 +206,7 @@ for line in cnv_relevant :
     start_pos = int(gene_region1.split("-")[0])
     end_pos = int(gene_region1.split("-")[1])
 
-    bed = open("Data/TST500C_manifest.bed")
+    bed = open("DATA/TST500C_manifest.bed")
     gene_string = ""
     gene_name_dict = {}
     for region in bed :

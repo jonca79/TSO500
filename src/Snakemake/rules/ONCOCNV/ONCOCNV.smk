@@ -5,7 +5,7 @@ singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.s
 
 rule fix_bed_file :
     input:
-        bed = "Data/TST500C_manifest.bed"
+        bed = "DATA/TST500C_manifest.bed"
     output:
         bed = "bed/ONCOCNV.bed"
     shell:

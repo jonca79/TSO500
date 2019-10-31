@@ -4,12 +4,12 @@ localrules: all, Create_TSO500_yaml
 rule all:
     input:
         TSO500_yaml = "TSO500.yaml",
-        TC = "Data/Pathological_purity_BMS_validation.txt"
+        TC = "DATA/Pathological_purity_BMS_validation.txt"
 
 rule Create_TSO500_yaml:
     output:
         TSO500_yaml = "TSO500.yaml",
-        TC = "Data/Pathological_purity_BMS_validation.txt"
+        TC = "DATA/Pathological_purity_BMS_validation.txt"
     run:
         import glob
         import os
@@ -18,7 +18,7 @@ rule Create_TSO500_yaml:
         RNA_sample_list = []
         KG_runname = os.getcwd().split("/")[-1]
         i = 1
-        sample_sheet_name = glob.glob("*sampelsheet.csv")
+        sample_sheet_name = glob.glob("*samplesheet.csv")
         if len(sample_sheet_name) > 1 :
             print("Error: Something wrong with the sample sheet name!")
             quit()

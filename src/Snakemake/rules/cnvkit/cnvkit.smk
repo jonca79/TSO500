@@ -6,7 +6,7 @@ singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.si
 
 rule Create_targets:
     input:
-        bed = "Data/TST500C_manifest.bed"
+        bed = "DATA/TST500C_manifest.bed"
     output:
         bed = "bed/manifest.target.bed"
     threads: 1
@@ -34,7 +34,7 @@ rule Build_normal_reference:
         bed1 = "bed/manifest.target.bed",
         bed2 = "bed/manifest.antitarget.bed",
         reference = "/data/ref_genomes/bcbio-nextgen/hg38/genomes/Hsapiens/hg38/seq/hg38.fa",
-        mappability = "Data/access-5k-mappable.hg19.bed"
+        mappability = "DATA/access-5k-mappable.hg19.bed"
     output:
         cnv_reference = "ref/normal_reference.cnn"
     threads: 4
@@ -52,7 +52,8 @@ rule Build_normal_reference:
 
 rule Call_cnv:
     input:
-        bams = expand("{tumor_sample}", tumor_sample=config["Tumor_samples"].values()),
+        #bams = expand("{tumor_sample}", tumor_sample=config["Tumor_samples"].values()),
+        ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         cnv_reference = "ref/normal_reference.cnn"
     output:
         regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["Tumor_samples"]],
@@ -68,8 +69,8 @@ rule Call_cnv:
 rule Filter_cnv:
     input:
         segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]],
-        purity = "Data/Pathological_purity_BMS_validation.txt",
-        relevant_genes = "Data/TSO500_relevant_genes.txt",
+        purity = "DATA/Pathological_purity_BMS_validation.txt",
+        relevant_genes = "DATA/TSO500_relevant_genes.txt",
         ONCOCNV_events = "CNV_calls/cnv_event.txt",
         bed_file = "bed/manifest.target.bed"
     output:

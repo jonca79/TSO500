@@ -32,7 +32,7 @@ for bam in bam_files :
     for gene in gene_files :
         exon_result_dict[bam][gene] = []
         print(gene)
-        gene_file = open("RNA_calling/Data/" + gene + "_exons.txt")
+        gene_file = open("DATA/" + gene + "_exons.txt")
         exon_list = []
         for line in gene_file :
             lline = line.strip().split("\t")

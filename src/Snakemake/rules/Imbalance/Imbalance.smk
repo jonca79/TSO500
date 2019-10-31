@@ -7,4 +7,4 @@ rule imbalance :
         imbalance = "Results/RNA/imbalance_called_gene.txt"
     run:
         import subprocess
-        subprocess.call("python RNA_calling/src/Imbalance.py " + " ".join(input.bams), shell=True)
+        subprocess.call("python src/Imbalance.py " + " ".join(input.bams), shell=True)

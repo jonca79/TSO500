@@ -32,8 +32,7 @@ rule fix_fastq_bs2:
         bash_scripts_dna = ["fastq_temp/DNA/" + s + ".fix_fastq.sh" for s in config["DNA_Samples"]],
         bash_scripts_rna = ["fastq_temp/RNA/" + s + ".fix_fastq.sh" for s in config["RNA_Samples"]]
     params:
-        #samples = expand(config["DNA_Samples"]) + expand(config["RNA_Samples"])
-        DNA_samples = [s for s in config["DNA_Samples"]]
+        DNA_samples = [s for s in config["DNA_Samples"]],
         RNA_samples = [s for s in config["RNA_Samples"]]
     run:
         import subprocess
