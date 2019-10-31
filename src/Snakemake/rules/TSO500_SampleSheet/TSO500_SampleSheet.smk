@@ -4,7 +4,7 @@ localrules: all, SampleSheet_TST170, SampleSheet_TSO500
 
 rule SampleSheet_TST170:
     input:
-        Sample_sheet = config["Runfolder"] + config["Sample_sheet"]
+        Sample_sheet = config["Sample_sheet"]
     output:
         Sample_sheet = "SampleSheet.csv"
     params:
@@ -43,7 +43,7 @@ rule SampleSheet_TST170:
 
 rule SampleSheet_TSO500:
     input:
-        Sample_sheet = config["Runfolder"] + config["Sample_sheet"]
+        Sample_sheet = config["Sample_sheet"]
     output:
         Sample_sheet = config["Sample_sheet"] + ".TSO500.csv"
     params:
@@ -56,11 +56,19 @@ rule SampleSheet_TSO500:
             if header :
                 if line[:5] == "Lane," :
                     header = False
-                SS.write(line)
+                    SS.write("Lane,Sample_ID,index,index2,Sample_Name,Sample_Plate,Sample_Well,I7_Index_ID,I5_Index_ID,Project,Description\n")
+                else :
+                    SS.write(line)
                 continue
             sample = line.split(",")[1]
             if sample in params.DNA_samples :
-                SS.write(line)
+                lline = line.strip().split(",")
+                SS.write(lline[0])
+                for column in lline[1:-1] :
+                    if column == "DNA" :
+                        column = ""
+                    SS.write("," + column)
+                SS.write("\n")
         SS.close()
         infile.close()
 

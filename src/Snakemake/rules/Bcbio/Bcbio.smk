@@ -8,10 +8,10 @@ S_rna = []
 if len(config["RNA_Samples"]) > 0 :
     for s in config["RNA_Samples"].values() :
         S_rna.append(s)
-fastq1_files = ["fastq_temp/DNA/" + s + "_S" + i + "_R1_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
-fastq1_files += ["fastq_temp/RNA/" + s + "_S" + i + "_R1_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
-fastq2_files =  ["fastq_temp/DNA/" + s + "_S" + i + "_R2_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
-fastq2_files += ["fastq_temp/RNA/" + s + "_S" + i + "_R2_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
+fastq1_files = ["fastq_temp/DNA/" + s + "_" + i + "_R1_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
+fastq1_files += ["fastq_temp/RNA/" + s + "_" + i + "_R1_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
+fastq2_files =  ["fastq_temp/DNA/" + s + "_" + i + "_R2_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
+fastq2_files += ["fastq_temp/RNA/" + s + "_" + i + "_R2_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
 
 rule demultiplex:
     output:
@@ -38,10 +38,10 @@ rule fix_fastq_bs2:
         import subprocess
         subprocess.call("module load slurm",shell=True)
         subprocess.call("mkdir fastq",shell=True)
-        i = 1
+        i = 0
         for sample in params.DNA_samples :
             bs = open("fastq_temp/DNA/" + sample + ".fix_fastq.sh", "w")
-            bs.write("for s in S" + S_dna[i] + "," + sample + "; do\n")
+            bs.write("for s in " + S_dna[i] + "," + sample + "; do\n")
             bs.write("\tIFS=\",\";\n")
             bs.write("\tset -- $s;\n")
             bs.write("\tsample_number=$1;\n")
@@ -50,14 +50,14 @@ rule fix_fastq_bs2:
             bs.write("\t\t\techo \"zcat fastq_temp/DNA/\"$sample\"_\"$sample_number\"_\"$r\"* | awk '{if(/^@/){split(\$0,a,\\\":\\\");print(a[1]\\\":\\\"a[2]\\\":\\\"a[3]\\\":\\\"a[4]\\\":\\\"a[5]\\\":\\\"a[6]\\\":\\\"a[7]\\\":UMI_\\\"gsub(\\\"+\\\",\\\"\\\",a[8])\\\":\\\"a[9]\\\":\\\"a[10]\\\":\\\"a[11])}else{print(\$0)}}' | gzip > fastq/DNA/\"$sample\"_\"$r\".fastq.gz &\";\n")
             bs.write("\t\tdone  | bash -\n")
             bs.write("done\n")
-            bs.write("sleep 3600\n")
+            bs.write("sleep 5400\n")
             bs.close()
             subprocess.call("chmod 774 fastq_temp/DNA/" + sample + ".fix_fastq.sh", shell=True)
             i += 1
-        i = 1
+        i = 0
         for sample in params.RNA_samples :
             bs = open("fastq_temp/RNA/" + sample + ".fix_fastq.sh", "w")
-            bs.write("for s in S" + R_dna[i] + "," + sample + "; do\n")
+            bs.write("for s in " + S_rna[i] + "," + sample + "; do\n")
             bs.write("\tIFS=\",\";\n")
             bs.write("\tset -- $s;\n")
             bs.write("\tsample_number=$1;\n")
@@ -66,7 +66,7 @@ rule fix_fastq_bs2:
             bs.write("\t\t\techo \"zcat fastq_temp/RNA/\"$sample\"_\"$sample_number\"_\"$r\"* | awk '{if(/^@/){split(\$0,a,\\\":\\\");print(a[1]\\\":\\\"a[2]\\\":\\\"a[3]\\\":\\\"a[4]\\\":\\\"a[5]\\\":\\\"a[6]\\\":\\\"a[7]\\\":UMI_\\\"gsub(\\\"+\\\",\\\"\\\",a[8])\\\":\\\"a[9]\\\":\\\"a[10]\\\":\\\"a[11])}else{print(\$0)}}' | gzip > fastq/RNA/\"$sample\"_\"$r\".fastq.gz &\";\n")
             bs.write("\t\tdone  | bash -\n")
             bs.write("done\n")
-            bs.write("sleep 3600\n")
+            bs.write("sleep 1800\n")
             bs.close()
             subprocess.call("chmod 774 fastq_temp/RNA/" + sample + ".fix_fastq.sh", shell=True)
             i += 1
@@ -137,7 +137,9 @@ rule run_bcbio:
         merged_fastq_R1 = ["fastq/DNA/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
         merged_fastq_R2 = ["fastq/DNA/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]]
     output:
-        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]]
+        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bais = ["final/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
+        vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     run:
         import subprocess
         subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm/16.05.11; bcbio_nextgen.py bcbio_system_Moriarty.yaml config.yaml -t ipython -s slurm -q core -n 96  -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)

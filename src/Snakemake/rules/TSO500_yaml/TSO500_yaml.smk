@@ -59,9 +59,9 @@ rule Create_TSO500_yaml:
         outfile.write("\nRNA_Samples:\n")
         for sample in RNA_sample_list :
             outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
-        outfile.write("\nNormal_samples:\n\nTumor_samples:\n")
-        for sample in DNA_sample_list :
-            outfile.write("  \"" + sample[0] + "\": /beegfs/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/final/" + sample[0] + "/" + sample[0] + "-ready.bam\n")
+        #outfile.write("\nNormal_samples:\n\nTumor_samples:\n")
+        #for sample in DNA_sample_list :
+        #    outfile.write("  \"" + sample[0] + "\": /beegfs/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/final/" + sample[0] + "/" + sample[0] + "-ready.bam\n")
         outfile.close()
         outfile2.close()
 

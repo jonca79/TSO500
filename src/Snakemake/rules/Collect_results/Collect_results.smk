@@ -4,7 +4,7 @@ localrules: all, intron_filter, copy_biomarker, move_bam, copy_CNV, copy_TST170
 
 rule ensemble_filter:
     input:
-        vcf = "bcbio/final/{sample}/{sample}-ensemble.vcf.gz"
+        vcf = "final/{sample}/{sample}-ensemble.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.vcf.gz"
     run:
@@ -36,19 +36,26 @@ rule ffpe_filter:
 
 rule copy_biomarker:
     input:
-        biomarker = "TSO500/Results/{sample}_BiomarkerReport.txt",
-        metrics = "TSO500/Results/MetricsReport.tsv"
+    #    biomarker = "TSO500/Results/{sample}_BiomarkerReport.txt",
+    #    metrics = "TSO500/Results/MetricsReport.tsv"
+        TSO500_done = "TSO500/TSO500_done.txt"
     output:
         biomarker = "Results/DNA/{sample}/{sample}_BiomarkerReport.txt",
         metrics = "Results/DNA/{sample}/MetricsReport.tsv"
+    params:
+        samples = config["DNA_Samples"]
     run:
-        shell("cp {input.biomarker} {output.biomarker}")
-        shell("cp {input.metrics} {output.metrics}")
+        #shell("cp {input.biomarker} {output.biomarker}")
+        #shell("cp {input.metrics} {output.metrics}")
+        import subprocess
+        for sample in samples :
+            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/" + sample + "_BiomarkerReport.txt", shell=True)
+            subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/" + sample + "/MetricsReport.tsv", shell=True)
 
 rule move_bam:
     input:
-        bam = "bcbio/final/{sample}/{sample}-ready.bam",
-        bai = "bcbio/final/{sample}/{sample}-ready.bam.bai"
+        bam = "final/{sample}/{sample}-ready.bam",
+        bai = "final/{sample}/{sample}-ready.bam.bai"
     output:
         bam = "Results/DNA/{sample}/{sample}-ready.bam",
         bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"

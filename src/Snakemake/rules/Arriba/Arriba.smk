@@ -4,10 +4,11 @@ singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.si
 
 rule STAR_arrbia:
     input:
-        fastq1 = "fastq/{sample}_R1.fastq.gz",
-        fastq2 = "fastq/{sample}_R2.fastq.gz"
+        fastq1 = "fastq/RNA/{sample}_R1.fastq.gz",
+        fastq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
-        bams = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bams = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        junctions = "STAR/{sample}SJ.out.tab"
     threads: 6
     run:
         import subprocess

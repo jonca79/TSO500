@@ -11,26 +11,11 @@ rule fix_bed_file :
     shell:
         "awk 'BEGIN{{ OFS=\"\t\"}}{{ print $1, $2, $3, NR, \"0\", $4 }}' {input.bed} > {output.bed}"
 
-rule Normal_levels:
-    input:
-        bams = expand("{normal_sample}", normal_sample=config["Normal_samples"]),
-        bed = "bed/ONCOCNV.bed"
-    output:
-        stats = "ref/Control_stats.txt"
-    run:
-        import os
-        command_line = "singularity exec -B /projects/ -B /gluster-storage-volume/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg "
-        command_line += "perl ONCOCNV/ONCOCNV_getCounts.pl getControlStats "
-        command_line += "-m Ampli "
-        command_line += "-b " + input[-1]
-        command_line += " -c \"" + ",".join(input[:-1]) + "\" "
-        command_line += "-o " + output[0]
-        print(command_line)
-        os.system(command_line)
 
 rule Tumor_levels:
     input:
-        bam = lambda wildcards: config["Tumor_samples"][wildcards.sample],
+        #bam = lambda wildcards: config["Tumor_samples"][wildcards.sample],
+        bam = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         stats = "ref/Control_stats.txt"
     output:
         stats = "stats/{sample}.stats.txt"
@@ -64,22 +49,12 @@ rule Target_GC:
         "-of {output.GC}"
 
 
-rule Controls_calls:
-    input:
-        stats = "ref/Control_stats.txt",
-        GC = "ref/target.GC.txt"
-    output:
-        stats = "ref/Control_stats.Processed.txt"
-    shell:
-        "cat ONCOCNV/processControl.R | R --slave "
-        "--args {input.stats} {output.stats} {input.GC}"
-
 rule Calls:
     input:
         tumor_stats = "stats/{sample}.stats.txt",
         control_stats = "ref/Control_stats.Processed.txt"
     output:
-        call = "calls/{sample}.output.txt"
+        call = "CNV_calls/{sample}.output.txt"
     shell:
         "cat ONCOCNV/processSamples.R | R --slave "
         "--args {input.tumor_stats} {input.control_stats} {output.call} "
@@ -87,9 +62,10 @@ rule Calls:
 
 rule CNV_event:
     input:
-        calls = ["calls/" + sample_id + ".output.txt" for sample_id in config["Tumor_samples"]]
+        #calls = ["CNV_calls/" + sample_id + ".output.txt" for sample_id in config["Tumor_samples"]]
+        calls = ["CNV_calls/" + sample_id + ".output.txt" for sample_id in config["DNA_Samples"]]
     output:
-        cnv_event = "calls/cnv_event.txt"
+        cnv_event = "CNV_calls/cnv_event.txt"
     shell :
         "python src/cnv_event.py "
         "{input.calls} "

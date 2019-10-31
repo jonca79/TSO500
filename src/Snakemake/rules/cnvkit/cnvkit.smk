@@ -28,36 +28,17 @@ rule Create_anti_targets:
         "-o {output.bed}"
 
 
-rule Build_normal_reference:
-    input:
-        bams = expand("{normal_sample}", normal_sample=config["Normal_samples"]),
-        bed1 = "bed/manifest.target.bed",
-        bed2 = "bed/manifest.antitarget.bed",
-        reference = "/data/ref_genomes/bcbio-nextgen/hg38/genomes/Hsapiens/hg38/seq/hg38.fa",
-        mappability = "DATA/access-5k-mappable.hg19.bed"
-    output:
-        cnv_reference = "ref/normal_reference.cnn"
-    threads: 4
-    shell:
-        "cnvkit.py batch "
-        "-n {input.bams} "
-        "-m hybrid "
-        "--output-reference {output.cnv_reference} "
-        "-t {input.bed1} "
-        "-f {input.reference} "
-        "-a {input.bed2} "
-        "-g {input.mappability} "
-        "-p {threads}"
-
 
 rule Call_cnv:
     input:
         #bams = expand("{tumor_sample}", tumor_sample=config["Tumor_samples"].values()),
-        ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         cnv_reference = "ref/normal_reference.cnn"
     output:
-        regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["Tumor_samples"]],
-        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]],
+        #regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["Tumor_samples"]],
+        regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]],
+        #segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]]
+        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
     threads: 8
     shell:
         "cnvkit.py batch "
@@ -68,7 +49,8 @@ rule Call_cnv:
 
 rule Filter_cnv:
     input:
-        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]],
+        #segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]],
+        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
         purity = "DATA/Pathological_purity_BMS_validation.txt",
         relevant_genes = "DATA/TSO500_relevant_genes.txt",
         ONCOCNV_events = "CNV_calls/cnv_event.txt",
