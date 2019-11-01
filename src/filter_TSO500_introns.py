@@ -4,7 +4,7 @@ import sys
 
 invcf = sys.argv[1]
 
-inbed = open("/projects/wp4/nobackup/workspace/somatic_dev/bedfiles/TST500C_manifest.bed")
+inbed = open("DATA/TST500C_manifest.bed")
 
 exon_dict = {}
 for line in inbed :

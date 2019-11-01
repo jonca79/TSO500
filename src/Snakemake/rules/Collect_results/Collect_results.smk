@@ -1,5 +1,5 @@
 
-localrules: all, intron_filter, copy_biomarker, move_bam, copy_CNV, copy_TST170
+localrules: all, copy_biomarker, copy_bam, copy_CNV, copy_TST170
 
 
 rule ensemble_filter:
@@ -16,10 +16,8 @@ rule intron_filter:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.no.introns.vcf"
-    params:
-        DNA_samples = expand(config["DNA_Samples"])
-    shell:
-        "python src/filter_TSO500_introns.py {input.vcf}"
+    run:
+        shell("python3 src/filter_TSO500_introns.py {input.vcf}")
 
 rule ffpe_filter:
     input:
@@ -27,12 +25,8 @@ rule ffpe_filter:
         bam = "Results/DNA/{sample}/{sample}-ready.bam"
     output:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.no.introns.ffpe.vcf"
-    shell:
-        "java -jar ../SOBDetector/SOBDetector_v1.0.1.jar "
-        "--input-type VCF "
-        "--input-variants {input.vcf} "
-        "--input-bam {input.bam} "
-        "--output-variants {output.vcf}"
+    run:
+        shell("java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {output.vcf}")
 
 rule copy_biomarker:
     input:
@@ -40,19 +34,21 @@ rule copy_biomarker:
     #    metrics = "TSO500/Results/MetricsReport.tsv"
         TSO500_done = "TSO500/TSO500_done.txt"
     output:
-        biomarker = "Results/DNA/{sample}/{sample}_BiomarkerReport.txt",
-        metrics = "Results/DNA/{sample}/MetricsReport.tsv"
+        #biomarker = "Results/DNA/{sample}/{sample}_BiomarkerReport.txt",
+        biomarker = ["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]],
+        #metrics = "Results/DNA/{sample}/MetricsReport.tsv"
+        metrics = ["Results/DNA/" + s + "/MetricsReport.tsv" for s in config["DNA_Samples"]]
     params:
         samples = config["DNA_Samples"]
     run:
         #shell("cp {input.biomarker} {output.biomarker}")
         #shell("cp {input.metrics} {output.metrics}")
         import subprocess
-        for sample in samples :
+        for sample in params.samples :
             subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/" + sample + "_BiomarkerReport.txt", shell=True)
             subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/" + sample + "/MetricsReport.tsv", shell=True)
 
-rule move_bam:
+rule copy_bam:
     input:
         bam = "final/{sample}/{sample}-ready.bam",
         bai = "final/{sample}/{sample}-ready.bam.bai"
@@ -60,7 +56,7 @@ rule move_bam:
         bam = "Results/DNA/{sample}/{sample}-ready.bam",
         bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
     run:
-        shell("mv {input.bam} {output.bam}")
+        shell("cp {input.bam} {output.bam}")
         shell("cp {input.bai} {output.bai}")
 
 rule copy_CNV:
@@ -72,18 +68,18 @@ rule copy_CNV:
         DNA_samples = expand(config["DNA_Samples"])
     run:
         import subprocess
-        for sample in params.RNA_samples :
-            subprocess.calls("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/")
-            subprocess.calls("cp CNV_results/" + sample + "*.png" + "Results/DNA/" + sample + "/")
+        for sample in params.DNA_samples :
+            subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/")
+            subprocess.call("cp CNV_results/" + sample + "*.png" + "Results/DNA/" + sample + "/")
 
 
 rule copy_TST170:
     input:
         fusions = ["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
-    output:
-        fusions = ["Results/RNA/" + s + "/" + s + "_Illumina_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
+    #output:
+    #    fusions = ["Results/RNA/" + s + "/" + s + "_Illumina_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
     shell:
-        "cp {input.fusions} {output.fusions}"
+        "cp {input.fusions} Results/RNA/"
 
 
 

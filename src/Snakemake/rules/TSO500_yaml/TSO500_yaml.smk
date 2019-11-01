@@ -7,16 +7,23 @@ rule all:
         TC = "DATA/Pathological_purity_BMS_validation.txt"
 
 rule Create_TSO500_yaml:
+    input:
+        run_info = "RunParameters.xml"
     output:
         TSO500_yaml = "TSO500.yaml",
         TC = "DATA/Pathological_purity_BMS_validation.txt"
     run:
         import glob
         import os
+        run_folder_name = ""
+        run_info_file = open(input.run_info)
+        for line in run_info_file :
+            if line.find("<RunID>") != -1 :
+                run_folder_name = line.split(">")[1].split("<")[0]
         state = 0
         DNA_sample_list = []
         RNA_sample_list = []
-        KG_runname = os.getcwd().split("/")[-1]
+        #KG_runname = os.getcwd().split("/")[-1]
         i = 1
         sample_sheet_name = glob.glob("*samplesheet.csv")
         if len(sample_sheet_name) > 1 :
@@ -49,8 +56,9 @@ rule Create_TSO500_yaml:
                 i += 1
         outfile = open(output.TSO500_yaml, "w")
         outfile2 = open(output.TC, "w")
-        outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/\n\n")
-        outfile.write("Outfolder: /projects/wp1/nobackup/ngs/klinik/OUTBOX/" + KG_runname + "/\n\n")
+        #outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/\n\n")
+        outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n\n")
+        #outfile.write("Outfolder: /projects/wp1/nobackup/ngs/klinik/OUTBOX/" + KG_runname + "/\n\n")
         outfile.write("Sample_sheet: " + sample_sheet_name + "\n\n")
         outfile.write("DNA_Samples:\n")
         for sample in DNA_sample_list :

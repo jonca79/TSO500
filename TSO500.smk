@@ -3,8 +3,8 @@ configfile: "TSO500.yaml"
 
 rule all:
     input:
-        regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["Tumor_samples"]],
-        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]],
+        regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]],
+        segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
         results = "CNV_results/relevant_cnv.txt",
         cnv_event = "CNV_calls/cnv_event.txt",
         STAR_bam = ["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]],
@@ -35,4 +35,4 @@ rule all:
 
 include: "src/Snakemake/workflow/TSO500_workflow.smk"
 
-#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n {cluster.n} -t {cluster.time}"  -s ./TSO500.smk --use-singularity --singularity-args "--bind /data --bind /beegfs  " --cluster-config Config/Slurm/cluster.json --restart-times 2
+#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n {cluster.n} -t {cluster.time}"  -s ./TSO500.smk --use-singularity --singularity-args "--bind /data --bind /beegfs --bind /gluster-storage-volume --bind /projects " --cluster-config Config/Slurm/cluster.json --restart-times 2
