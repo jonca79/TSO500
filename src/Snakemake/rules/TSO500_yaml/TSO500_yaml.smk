@@ -58,6 +58,7 @@ rule Create_TSO500_yaml:
         outfile2 = open(output.TC, "w")
         #outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/\n\n")
         outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n\n")
+        #outfile.write("Runfolder: " + run_folder_name + "/\n\n")
         #outfile.write("Outfolder: /projects/wp1/nobackup/ngs/klinik/OUTBOX/" + KG_runname + "/\n\n")
         outfile.write("Sample_sheet: " + sample_sheet_name + "\n\n")
         outfile.write("DNA_Samples:\n")

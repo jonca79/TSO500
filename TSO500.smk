@@ -29,7 +29,7 @@ rule all:
         metrics = ["Results/DNA/" + s + "/MetricsReport.tsv" for s in config["DNA_Samples"]],
         bai = ["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
         cnv_png = ["Results/DNA/" + s + "/" + s + "-ready.png" for s in config["DNA_Samples"]],
-        fusions_illumina = ["Results/RNA/" + s + "/" + s + "_Illumina_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
+        fusions_illumina = ["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
 
 
 
