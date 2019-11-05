@@ -245,3 +245,6 @@ for line in cnv_relevant :
     command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ".png"
     print(command_line)
     os.system(command_line)
+
+cnv_done = open("CNV_results/cnv_done.txt", "w")
+cnv_done.close()

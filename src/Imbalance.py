@@ -8,8 +8,8 @@ gene_files = ["ALK", "NRG1", "RET", "NTRK3", "NTRK1", "NTRK2", "ROS1"]
 #gene_files = ["ALK", "NRG1", "RET", "NTRK3"]
 outfile = open("Results/RNA/imbalance_all_gene.txt", "w")
 outfile2 = open("Results/RNA/imbalance_called_gene.txt", "w")
-outfile.write("Sample\tgene\t5'/3'-ratio\tCoverage\tNorm_Coverage\tImbalance\n")
-outfile2.write("Sample\tgene\t5'/3'-ratio\tCoverage\tNorm_Coverage\n")
+outfile.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\tImbalance\n")
+outfile2.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\n")
 
 bam_dict = {}
 for bam in bam_files :
@@ -42,8 +42,8 @@ for bam in bam_files :
             exon = lline[3]
             exon_list.append([exon, chrom, start_pos, end_pos])
             #print(exon, chrom, start_pos, end_pos)
-            print("samtools depth -aa -r " + chrom[3:] + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt")
-            subprocess.call("samtools depth -aa -r " + chrom[3:] + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt", shell=True)
+            print("samtools depth -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt")
+            subprocess.call("samtools depth -aa -r " + chrom + ":" + str(start_pos) + "-" + str(end_pos) + " " + bam + " > exon_coverage/" + exon + ".txt", shell=True)
         exon_result_dict[bam][gene].append(exon_list)
         avg_depth_list = []
         i = 0
@@ -83,7 +83,7 @@ for bam in bam_files :
             coverage /= 3.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 50.0 :
+            if imbalance > 3.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -103,7 +103,7 @@ for bam in bam_files :
             coverage /= 3.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 50.0 :
+            if imbalance > 3.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -123,7 +123,7 @@ for bam in bam_files :
             coverage /= 10.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 50.0 :
+            if imbalance > 3.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -143,7 +143,7 @@ for bam in bam_files :
             coverage /= 8.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 50.0 :
+            if imbalance > 3.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -163,7 +163,7 @@ for bam in bam_files :
             coverage /= 6.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 50.0 :
+            if imbalance > 3.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -184,7 +184,7 @@ for bam in bam_files :
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
             #if imbalance > 3.0 and coverage > 50.0 :
-            if imbalance > 1.0 and coverage > 50.0 :
+            if imbalance > 1.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :
@@ -204,7 +204,7 @@ for bam in bam_files :
             coverage /= 9.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 1.0 and coverage > 50.0 :
+            if imbalance > 1.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :

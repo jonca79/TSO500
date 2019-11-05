@@ -45,8 +45,8 @@ rule copy_biomarker:
         #shell("cp {input.metrics} {output.metrics}")
         import subprocess
         for sample in params.samples :
-            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/" + sample + "_BiomarkerReport.txt", shell=True)
-            subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/" + sample + "/MetricsReport.tsv", shell=True)
+            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/" + sample + "/", shell=True)
 
 rule copy_bam:
     input:
@@ -61,7 +61,8 @@ rule copy_bam:
 
 rule copy_CNV:
     input:
-        cnv = "CNV_results/relevant_cnv.txt"
+        cnv = "CNV_results/relevant_cnv.txt",
+        cnv_done = "CNV_results/cnv_done.txt"
     output:
         cnv_png = ["Results/DNA/" + s + "/" + s + "-ready.png" for s in config["DNA_Samples"]]
     params:
@@ -69,17 +70,26 @@ rule copy_CNV:
     run:
         import subprocess
         for sample in params.DNA_samples :
-            subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/")
-            subprocess.call("cp CNV_results/" + sample + "*.png" + "Results/DNA/" + sample + "/")
+            subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp CNV_results/" + sample + "*.png" + "Results/DNA/" + sample + "/", shell=True)
 
 
 rule copy_TST170:
     input:
-        fusions = ["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
+        fusions = ["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]],
+        bams = ["TST170/RNA_IntermediateFiles/Alignment/" + s + ".bam" for s in config["RNA_Samples"]]
     output:
-        fusions = ["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]]
-    shell:
-        "cp {input.fusions} Results/RNA/"
+        fusions = ["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]],
+        bams = ["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]],
+        bais = ["Results/RNA/" + s + "/" + s + ".bam.bai" for s in config["RNA_Samples"]]
+    params:
+        samples = config["RNA_Samples"]
+    run:
+        import subprocess
+        for sample in params.samples :
+            subprocess.call("cp TST170/RNA_" + sample + "/" + sample + "_HighConfidenceVariants.csv Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam.bai Results/DNA/" + sample + "/", shell=True)
 
 
 

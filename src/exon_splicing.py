@@ -2,7 +2,7 @@
 import subprocess
 import sys
 
-bed_file = sys.argv[1]
+bed_file = open(sys.argv[1])
 junction_files = sys.argv[2:]
 
 #
