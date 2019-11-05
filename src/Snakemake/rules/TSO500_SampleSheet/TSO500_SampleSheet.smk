@@ -9,7 +9,9 @@ rule SampleSheet_TST170:
         Sample_sheet = "SampleSheet.csv"
     params:
         RNA_samples = expand(config["RNA_Samples"])
+        Runfolder = config["Runfolder"]
     run:
+        import subprocess
         SS = open(output.Sample_sheet, "w")
         infile = open(input.Sample_sheet)
         state = 0
@@ -39,7 +41,7 @@ rule SampleSheet_TST170:
                     SS.write(",PoolRNA\n")
         SS.close()
         infile.close()
-
+        subprocess.call("cp " + output.Sample_sheet + " " + params.Runfolder, shell=True)
 
 rule SampleSheet_TSO500:
     input:

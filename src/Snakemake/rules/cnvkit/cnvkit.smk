@@ -56,7 +56,8 @@ rule Filter_cnv:
         ONCOCNV_events = "CNV_calls/cnv_event.txt",
         bed_file = "bed/manifest.target.bed"
     output:
-        relevant_cnvs = "CNV_results/relevant_cnv.txt"
+        relevant_cnvs = "CNV_results/relevant_cnv.txt",
+        cnv_done = "CNV_results/cnv_done.txt"
     shell:
         "source /projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit_venv/bin/activate; "
         "python src/report_cnv.py "
