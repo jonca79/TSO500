@@ -8,7 +8,7 @@ rule SampleSheet_TST170:
     output:
         Sample_sheet = "SampleSheet.csv"
     params:
-        RNA_samples = expand(config["RNA_Samples"])
+        RNA_samples = expand(config["RNA_Samples"]),
         Runfolder = config["Runfolder"]
     run:
         import subprocess
