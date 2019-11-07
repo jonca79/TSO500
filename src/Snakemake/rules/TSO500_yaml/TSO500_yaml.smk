@@ -6,6 +6,7 @@ rule all:
         TSO500_yaml = "TSO500.yaml",
         TC = "DATA/Pathological_purity_BMS_validation.txt"
 
+
 rule Create_TSO500_yaml:
     input:
         run_info = "RunParameters.xml"

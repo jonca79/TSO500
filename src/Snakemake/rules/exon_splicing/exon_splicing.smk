@@ -1,8 +1,5 @@
 
 
-configfile: "TSO500.yaml"
-
-
 rule exon_skipping :
     input:
         bed = "DATA/TST500C_manifest.bed",

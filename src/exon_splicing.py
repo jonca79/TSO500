@@ -48,7 +48,7 @@ for line in bed_file :
 exon_skip_dict = {}
 black_list_dict = {}
 for jf in junction_files :
-    junction_file = open("STAR/" + jf)
+    junction_file = open(jf)
     sample = jf.split("/")[-1].split("SJ")[0]
     print sample
     '''Exon skipping'''

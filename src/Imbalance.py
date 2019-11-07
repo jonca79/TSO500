@@ -14,6 +14,7 @@ outfile2.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\n")
 bam_dict = {}
 for bam in bam_files :
     print("samtools idxstats " + bam + " | awk -F '\t' '{s+=$3}END{print s}' > nr_reads.txt")
+    subprocess.call("samtools index " + bam, shell=True)
     subprocess.call("samtools idxstats " + bam + " | awk -F '\t' '{s+=$3}END{print s}' > nr_reads.txt", shell=True)
     nr_bam_file = open("nr_reads.txt")
     nr_reads = 0

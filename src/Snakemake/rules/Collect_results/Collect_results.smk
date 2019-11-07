@@ -71,7 +71,7 @@ rule copy_CNV:
         import subprocess
         for sample in params.DNA_samples :
             subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/", shell=True)
-            subprocess.call("cp CNV_results/" + sample + "*.png" + "Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp CNV_results/" + sample + "*.png " + "Results/DNA/" + sample + "/", shell=True)
 
 
 rule copy_TST170:
@@ -88,9 +88,11 @@ rule copy_TST170:
     run:
         import subprocess
         for sample in params.samples :
-            subprocess.call("cp TST170/RNA_" + sample + "/" + sample + "_HighConfidenceVariants.csv Results/DNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam Results/DNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam.bai Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_" + sample + "/" + sample + "_HighConfidenceVariants.csv Results/RNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam Results/RNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam.bai Results/RNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RNA_SampleMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
+            subprocess.call("cp TST170/RunMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
 
 
 
