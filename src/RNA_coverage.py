@@ -14,7 +14,7 @@ for gene in genes :
     regions = []
     bedfile = open(bedfilename)
     for line in bedfile :
-        if line.find(gene + "_Exon") and not (region.find("Additional") != -1 or region.find("Fusion") != -1 or region.find("Amp") != -1) :
+        if line.find(gene + "_Exon") != -1 and not (line.find("Additional") != -1 or line.find("Fusion") != -1 or line.find("Amp") != -1) :
             lline = line.strip().split("\t")
             regions.append([lline[0], lline[1], lline[2]])
     bedfile.close()
@@ -24,6 +24,7 @@ for gene in genes :
         region = region[0] + ":" + region[1] + "-" + region[2]
         sample = bam_file.split("/")[-2]
         cov_outfile_name = "DATA/RNA_gene_depth_" + sample + ".txt"
+        print("samtools depth -a -r " + region + " " + bam_file + " > " + cov_outfile_name)
         subprocess.call("samtools depth -a -r " + region + " " + bam_file + " > " + cov_outfile_name, shell=True)
         depthfile = open(cov_outfile_name)
         for line in depthfile :

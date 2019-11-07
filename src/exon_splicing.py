@@ -13,7 +13,9 @@ junction_files = sys.argv[2:]
 #                 "R-19-164SJ.out.tab", "R-19-19SJ.out.tab", "R-19-29SJ.out.tab", "R3_S9SJ.out.tab", "R5_S11SJ.out.tab", "R7_S13SJ.out.tab"]
 
 outfile = open("Results/RNA/exon_skipping.txt", "w")
-outfile.write("Sample\tGene\tChrom\tStart_pos\tEnd_pos\tratio_skipped_not_skipped\tskipped_exons\n")
+outfile.write("Sample\tGene\tChrom\tStart_pos\tEnd_pos\tratio_not_skipped_vs_skipped(<0.05)\tskipped_exons\n")
+outfile2 = open("Results/RNA/exon_skipping_details.txt", "w")
+outfile2.write("Sample\tGene\tChrom\tStart_pos\tEnd_pos\texon\tsplit_reads_in\tsplit_reads_out\tratio_not_skipped_vs_skipped\n")
 
 
 
@@ -50,7 +52,7 @@ black_list_dict = {}
 for jf in junction_files :
     junction_file = open(jf)
     sample = jf.split("/")[-1].split("SJ")[0]
-    print sample
+    print(sample)
     '''Exon skipping'''
     for line in junction_file :
         lline = line.strip().split("\t")
@@ -63,11 +65,11 @@ for jf in junction_files :
             i = 0
             for exon in exon_split_dict[chrom] :
                 if start_pos >= exon[0] and start_pos <= exon[1] :
-                    exon_split_dict[chrom][i][2] += split_reads
+                    exon_split_dict[chrom][i][3] += split_reads
                     gene = exon_split_dict[chrom][i][4].split("_")[0]
                     gene_split_dict[gene][0] += split_reads
                 if end_pos >= exon[0] and end_pos <= exon[1] :
-                    exon_split_dict[chrom][i][3] += split_reads
+                    exon_split_dict[chrom][i][2] += split_reads
                 i += 1
     for chrom in exon_split_dict :
         for exon in exon_split_dict[chrom] :
@@ -78,8 +80,9 @@ for jf in junction_files :
     for chrom in exon_split_dict :
         for exon in exon_split_dict[chrom] :
             gene = exon[4].split("_")[0]
-            ratio = (exon[2] + exon[3]) / (gene_split_dict[gene][0] / float(len(gene_split_dict[gene][1])))
-            if ratio < 0.2 :
+            ratio = (exon[2] + exon[3]) / (2 * gene_split_dict[gene][0] / float(len(gene_split_dict[gene][1])))
+            outfile2.write(sample + "\t" + gene + "\t" + chrom + "\t" + str(exon[0]) + "\t" + str(exon[1]) + "\t" + exon[4] + "\t" + str(exon[2]) + "\t" + str(exon[3]) + "\t" + str(ratio) + "\n")
+            if ratio < 0.05 :
                 print(ratio, exon)
                 #Sample\tGene\tChrom\tStart_pos\tEnd_pos\tratio_skipped_not_skipped\tskipped_exons\n")
                 outfile.write(sample + "\t" + gene + "\t" + chrom + "\t" + str(exon[0]) + "\t" + str(exon[1]) + "\t" + str(ratio) + "\t" + exon[4] + "\n")
@@ -105,3 +108,5 @@ for sample_exon in out_list :
         outfile.write("," + skipped_exon[3])
     outfile.write("\n")
     #outfile.write(key.split("__")[0] + "\t" + key.split("__")[1] + "\t" + str(len(exon_skip_dict[key])) + "\n")
+outfile.close()
+outfile2.close()
