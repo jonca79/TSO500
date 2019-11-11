@@ -8,6 +8,7 @@ rule STAR_arrbia:
         fastq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
         bams = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bais = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai",
         junctions = "STAR/{sample}SJ.out.tab"
     threads: 6
     run:
@@ -35,6 +36,7 @@ rule STAR_arrbia:
         command += "--outFileNamePrefix STAR/" + wildcards.sample
         print(command)
         subprocess.call(command, shell=True)
+        subprocess.call("samtools index " + output.bams)
 
 
 rule Arriba:
@@ -63,3 +65,26 @@ rule Arriba_HC:
         import subprocess
         subprocess.call("head -n 1 " + input.fusions + " > " + output.fusions, shell=True)
         subprocess.call("grep -P \"\thigh\t\" " + input.fusions + " >> " + output.fusions, shell=True)
+
+rule Arriba_image:
+    input:
+        fusion = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv",
+        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bai = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai"
+    output:
+        image = "Results/RNA/{sample}/{sample}.Arrbia.fusions.pdf"
+    params:
+        image_out_path = "Results/RNA/{sample}/"
+    run:
+        import subprocess
+        command = "singularity exec "
+        command += "-B " + params.image_out_path + ":/output "
+        command += "-B /projects/wp4/nobackup/workspace/jonas_test/Arriba/references:/references:ro "
+        command += "-B " + input.fusion + ":/fusions.tsv:ro "
+        command += "-B " + input.bam + ":/Aligned.sortedByCoord.out.bam:ro "
+        command += "-B " + input.bai + ":/Aligned.sortedByCoord.out.bam.bai:ro "
+        command += "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
+        command += "draw_fusions.sh"
+        print(command)
+        subprocess.call(command, shell=True)
+        subprocess.call("mv " + params.image_out_path + "fusions.pdf " + output.image, shell=True)

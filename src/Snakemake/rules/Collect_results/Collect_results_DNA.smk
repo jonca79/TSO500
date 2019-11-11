@@ -1,5 +1,5 @@
 
-localrules: copy_biomarker, copy_bam, copy_CNV, copy_TST170
+localrules: copy_biomarker, copy_bam, copy_CNV
 
 
 rule ensemble_filter:
@@ -30,19 +30,13 @@ rule ffpe_filter:
 
 rule copy_biomarker:
     input:
-    #    biomarker = "TSO500/Results/{sample}_BiomarkerReport.txt",
-    #    metrics = "TSO500/Results/MetricsReport.tsv"
         TSO500_done = "TSO500/TSO500_done.txt"
     output:
-        #biomarker = "Results/DNA/{sample}/{sample}_BiomarkerReport.txt",
         biomarker = ["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]],
-        #metrics = "Results/DNA/{sample}/MetricsReport.tsv"
         metrics = ["Results/DNA/" + s + "/MetricsReport.tsv" for s in config["DNA_Samples"]]
     params:
         samples = config["DNA_Samples"]
     run:
-        #shell("cp {input.biomarker} {output.biomarker}")
-        #shell("cp {input.metrics} {output.metrics}")
         import subprocess
         for sample in params.samples :
             subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
@@ -72,30 +66,3 @@ rule copy_CNV:
         for sample in params.DNA_samples :
             subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/", shell=True)
             subprocess.call("cp CNV_results/" + sample + "*.png " + "Results/DNA/" + sample + "/", shell=True)
-
-
-rule copy_TST170:
-    input:
-        fusions = ["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]],
-        bams = ["TST170/RNA_IntermediateFiles/Alignment/" + s + ".bam" for s in config["RNA_Samples"]],
-        bais = ["TST170/RNA_IntermediateFiles/Alignment/" + s + ".bam.bai" for s in config["RNA_Samples"]]
-    output:
-        fusions = ["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]],
-        bams = ["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]],
-        bais = ["Results/RNA/" + s + "/" + s + ".bam.bai" for s in config["RNA_Samples"]]
-    params:
-        samples = config["RNA_Samples"]
-    run:
-        import subprocess
-        for sample in params.samples :
-            subprocess.call("cp TST170/RNA_" + sample + "/" + sample + "_HighConfidenceVariants.csv Results/RNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam Results/RNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RNA_IntermediateFiles/Alignment/" + sample + ".bam.bai Results/RNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RNA_SampleMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
-            subprocess.call("cp TST170/RunMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
-
-
-
-
-
-#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n 1 -t 10:00:00"  -s ./Collect_results.smk

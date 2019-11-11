@@ -62,13 +62,19 @@ rule Create_TSO500_yaml:
         #outfile.write("Runfolder: " + run_folder_name + "/\n\n")
         #outfile.write("Outfolder: /projects/wp1/nobackup/ngs/klinik/OUTBOX/" + KG_runname + "/\n\n")
         outfile.write("Sample_sheet: " + sample_sheet_name + "\n\n")
-        outfile.write("DNA_Samples:\n")
-        for sample in DNA_sample_list :
-            outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
-            outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
-        outfile.write("\nRNA_Samples:\n")
-        for sample in RNA_sample_list :
-            outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
+        if len(DNA_sample_list) == 0 :
+            outfile.write("DNA_Samples: No DNA\n")
+        else :
+            outfile.write("DNA_Samples:\n")
+            for sample in DNA_sample_list :
+                outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
+                outfile2.write(sample[0] + "-ready\t" + sample[2] + "\n")
+        if len(RNA_sample_list) == 0 :
+            outfile.write("\nRNA_Samples: No RNA\n")
+        else :
+            outfile.write("\nRNA_Samples:\n")
+            for sample in RNA_sample_list :
+                outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
         #outfile.write("\nNormal_samples:\n\nTumor_samples:\n")
         #for sample in DNA_sample_list :
         #    outfile.write("  \"" + sample[0] + "\": /beegfs/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/final/" + sample[0] + "/" + sample[0] + "-ready.bam\n")

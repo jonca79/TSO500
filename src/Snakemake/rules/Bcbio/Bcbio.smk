@@ -36,7 +36,6 @@ rule fix_fastq_bs2:
         RNA_samples = [s for s in config["RNA_Samples"]]
     run:
         import subprocess
-        subprocess.call("module load slurm",shell=True)
         subprocess.call("mkdir fastq",shell=True)
         i = 0
         for sample in params.DNA_samples :
@@ -82,7 +81,7 @@ rule fix_fastq_run_DNA:
         "{input.bash_scripts_DNA}"
 
 
-rule fix_fastq_run_RNA:
+rule fix_fastq_run_RNA:/data/illumina/TSO500/runfiles/bcbio_system_Moriarty.yaml
     input:
         bash_scripts_RNA = "fastq_temp/RNA/{sample}.fix_fastq.sh"
     output:
@@ -135,14 +134,16 @@ rule create_config:
 rule run_bcbio:
     input:
         merged_fastq_R1 = ["fastq/DNA/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
-        merged_fastq_R2 = ["fastq/DNA/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]]
+        merged_fastq_R2 = ["fastq/DNA/" + s + "_R2.fastq.gz" for s in config["DNA_Samples"]],
+        config = "config.yaml",
+        bcbio_moriarty_config = "DATA/bcbio_system_Moriarty.yaml"
     output:
         bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bais = ["final/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
         vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     run:
         import subprocess
-        subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm/16.05.11; bcbio_nextgen.py bcbio_system_Moriarty.yaml config.yaml -t ipython -s slurm -q core -n 96  -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)
+        subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n 96  -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)
 
 
 #snakemake -np -j 8 --drmaa "-A wp4 -s -p core -n 8 -t 2:00:00 "  -s ./Bcbio.smk
