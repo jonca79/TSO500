@@ -30,10 +30,10 @@ def get_input():
         input_list.append(["Results/DNA/" + s + "/" + s + "-ready.png" for s in config["DNA_Samples"]])
 
         '''QC'''
-        input_list.append(DNA_coverage = ["Results/DNA/" + s + "/Low_coverage_positions.txt" for s in config["DNA_Samples"]],
+        input_list.append(["Results/DNA/" + s + "/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
 
         '''Collect results'''
-        input_list.append(bai = ["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
+        input_list.append(["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
 
     if config["RNA_Samples"] != "No RNA" :
         '''Demultiplexning'''
@@ -60,23 +60,11 @@ def get_input():
 
         '''QC'''
         input_list.append(["Results/RNA/" + s + "/Housekeeping_gene_coverage.txt" for s in config["RNA_Samples"]])
-
+    return input_list
 
 rule all:
     input:
-        get_input
-
-
-
-
-
-
-
-
-
-
+        get_input()
 
 
 include: "src/Snakemake/workflow/TSO500_workflow.smk"
-
-#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n {cluster.n} -t {cluster.time}"  -s ./TSO500.smk --use-singularity --singularity-args "--bind /data --bind /beegfs --bind /gluster-storage-volume --bind /projects " --cluster-config Config/Slurm/cluster.json --restart-times 2
