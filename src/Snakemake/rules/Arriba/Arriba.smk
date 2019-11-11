@@ -1,6 +1,5 @@
 
-singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg"
-
+localrules: Arriba_HC, Arriba_IGV_bat
 
 rule STAR_arrbia:
     input:
@@ -45,6 +44,7 @@ rule Arriba:
     output:
         fusions1 = "Arriba_results/{sample}.fusions.tsv",
         fusions2 = "Arriba_results/{sample}.fusions.discarded.tsv"
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg"
     shell:
         "/arriba_v1.1.0/arriba "
     	"-x {input.bams} "
@@ -61,10 +61,9 @@ rule Arriba_HC:
         fusions = "Arriba_results/{sample}.fusions.tsv"
     output:
         fusions = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv"
-    run:
-        import subprocess
-        subprocess.call("head -n 1 " + input.fusions + " > " + output.fusions, shell=True)
-        subprocess.call("grep -P \"\thigh\t\" " + input.fusions + " >> " + output.fusions, shell=True)
+    shell:
+        "head -n 1 {input.fusions} > {output.fusions} &&"
+        "grep -P \"\thigh\t\" {input.fusions} >> {output.fusions}"
 
 rule Arriba_image:
     input:
@@ -88,3 +87,45 @@ rule Arriba_image:
         print(command)
         subprocess.call(command, shell=True)
         subprocess.call("mv " + params.image_out_path + "fusions.pdf " + output.image, shell=True)
+
+rule Arriba_IGV_bat:
+    input:
+        fusion = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv",
+        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+    output:
+        bat = "Arriba_results/{sample}_IGV.bat"
+    run:
+        sample = output.bat.split("Arriba_results/")[1].split("_IGV")[0]
+        outfile = open(output.bat, "w")
+        outfile.write("new\n")
+        outfile.write("genome DATA/igv/genomes/hg19.genome\n")
+        outfile.write("load " + input.bam + "\n")
+        outfile.write("snapshotDirectory Arriba_results/" + sample + "/\n")
+        header = True
+        infile = open(input.fusion)
+        for line in infile :
+            if header:
+                header = False
+                continue
+            lline = line.strip().split("\t")
+            pos1 = "chr" + lline[4]
+            pos2 = "chr" + lline[5]
+            gene1 = lline[0]
+            gene2 = lline[1]
+            outfile.write("goto " + pos1 + " " + pos2 + "\n")
+            outfile.write("sort base\n")
+            outfile.write("squish\n")
+            outfile.write("preference SAM.SHOW_SOFT_CLIPPED true\n")
+            outfile.write("snapshot " + gene1 + "_" + gene2 + "_" + pos1.split(":")[0] + "_" + pos1.split(":")[1] + "_" + pos2.split(":")[0] + "_" + pos2.split(":")[1] + ".svg\n")
+        outfile.write("exit\n")
+        infile.close()
+        outfile.close()
+
+rule Arriba_IGV_run:
+    input:
+        bat = "Arriba_results/{sample}_IGV.bat"
+    output:
+        done_file = "Arriba_results/{sample}/IGV_done.txt"
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/igv-2.4.10-0.simg"
+    shell:
+        "xvfb-run --server-args='-screen 0 3200x2400x24' --auto-servernum --server-num=1 igv.sh -b {input.bat} && touch {output.done_file}"

@@ -40,6 +40,10 @@ rule create_config:
         conf.close()
 
 
+bcbio_cores = len(config["DNA_Samples"]) * 16
+if bcbio_cores > 64 :
+    bcbio_cores = 64
+
 rule run_bcbio:
     input:
         merged_fastq_R1 = ["fastq/DNA/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]],
@@ -52,8 +56,4 @@ rule run_bcbio:
         vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     run:
         import subprocess
-        subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n 96  -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)
-
-
-#snakemake -np -j 8 --drmaa "-A wp4 -s -p core -n 8 -t 2:00:00 "  -s ./Bcbio.smk
-#snakemake -np -j 8 --drmaa "-A wp4 -s -p core -n {cluster.n} -t {cluster.time}"  -s ./Bcbio.smk --cluster-config ./cluster.json --restart-times 2
+        subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n " + str(bcbio_cores) + " -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)

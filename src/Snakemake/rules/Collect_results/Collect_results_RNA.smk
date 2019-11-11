@@ -21,8 +21,10 @@ rule copy_TST170:
             subprocess.call("cp TST170/RNA_SampleMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
             subprocess.call("cp TST170/RunMetricsReport.txt Results/RNA/" + sample + "/", shell=True)
 
-
-
-
-
-#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n 1 -t 10:00:00"  -s ./Collect_results.smk
+rule copy_IGV:
+    input:
+        done_file = "Arriba_results/{sample}/IGV_done.txt"
+    output:
+        done_file = "Arriba_results/{sample}/IGV_copy_done.txt"
+    shell:
+        "cp Arriba_results/{wildcards.sample}/*.svg Results/RNA/{wildcards.sample}/"

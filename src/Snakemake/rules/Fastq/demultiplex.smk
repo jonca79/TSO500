@@ -1,4 +1,21 @@
 
+fastq1_files = []
+fastq2_files = []
+
+if config["DNA_Samples"] != "No DNA" :
+    S_dna = []
+    for s in config["DNA_Samples"].values() :
+        S_dna.append(s)
+    fastq1_files += ["fastq_temp/DNA/" + s + "_" + i + "_R1_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
+    fastq2_files +=  ["fastq_temp/DNA/" + s + "_" + i + "_R2_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
+
+if config["RNA_Samples"] != "No RNA" :
+    S_rna = []
+    for s in config["RNA_Samples"].values() :
+        S_rna.append(s)
+    fastq1_files += ["fastq_temp/RNA/" + s + "_" + i + "_R1_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
+    fastq2_files += ["fastq_temp/RNA/" + s + "_" + i + "_R2_001.fastq.gz" for s,i in zip(config["RNA_Samples"], S_rna)]
+
 
 rule demultiplex:
     output:
