@@ -40,9 +40,9 @@ rule create_config:
         conf.close()
 
 
-bcbio_cores = len(config["DNA_Samples"]) * 16
-if bcbio_cores > 64 :
-    bcbio_cores = 64
+bcbio_cores = len(config["DNA_Samples"]) * 16 + 1
+if bcbio_cores > 65 :
+    bcbio_cores = 65
 
 rule run_bcbio:
     input:
@@ -54,6 +54,7 @@ rule run_bcbio:
         bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         bais = ["final/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
         vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
-    run:
-        import subprocess
-        subprocess.call("module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n " + str(bcbio_cores) + " -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999", shell= True)
+    params:
+        bcbio_nr_cores = str(bcbio_cores)
+    shell:
+        "module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n {params.bcbio_nr_cores} -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999"
