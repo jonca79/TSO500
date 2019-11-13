@@ -1,6 +1,6 @@
 
 include: "../rules/Fastq/demultiplex.smk"
-
+ 
 if config["DNA_Samples"] != "No DNA" :
     include: "../rules/Illumina_SampleSheets/TSO500_SampleSheet.smk"
     include: "../rules/Illumina_TSO500/Illumina_TSO500.smk"

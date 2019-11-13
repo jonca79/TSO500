@@ -1,5 +1,5 @@
 
-localrules: copy_biomarker, copy_bam, copy_CNV
+localrules: copy_biomarker, copy_CNV
 
 
 rule ensemble_filter:
@@ -45,13 +45,14 @@ rule copy_biomarker:
 rule copy_bam:
     input:
         bam = "final/{sample}/{sample}-ready.bam",
-        bai = "final/{sample}/{sample}-ready.bam.bai"
+        #bai = "final/{sample}/{sample}-ready.bam.bai"
     output:
         bam = "Results/DNA/{sample}/{sample}-ready.bam",
         bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
     run:
         shell("cp {input.bam} {output.bam}")
-        shell("cp {input.bai} {output.bai}")
+        #shell("cp {input.bai} {output.bai}")
+        shell("samtools index {output.bam}")
 
 rule copy_CNV:
     input:

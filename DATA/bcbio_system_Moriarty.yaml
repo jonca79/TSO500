@@ -18,7 +18,7 @@ resources:
   # avoids needing to configure/adjust for every program
   default:
     memory: 7G
-    cores: 64
+    cores: 16
     jvm_opts: ["-Xms1000m", "-Xmx7000m"]
   log:
     dir: /sw/pipelines/bcbio/0.8.9/share/java/log
@@ -29,25 +29,25 @@ resources:
   bwa:
     cmd: bwa
     memory: 7g
-    cores: 64
+    cores: 16
   samtools:
     memory: 7G
-    cores: 64
+    cores: 16
   star:
     memory: 7g
-    cores: 64
+    cores: 16
   snap:
     memory: 7G
-    cores: 64
+    cores: 16
   kraken:
     memory: 7G
-    cores: 64
+    cores: 16
   qsignature:
     memory: 7G
-    cores: 64
+    cores: 16
   qualimap:
     memory: 7g
-    cores: 64
+    cores: 16
   fgbio:
     options: [--min-reads, 1]
   qsnp:

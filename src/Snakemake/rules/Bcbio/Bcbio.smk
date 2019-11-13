@@ -40,9 +40,9 @@ rule create_config:
         conf.close()
 
 
-bcbio_cores = len(config["DNA_Samples"]) * 16 + 1
-if bcbio_cores > 65 :
-    bcbio_cores = 65
+bcbio_cores = len(config["DNA_Samples"]) * 16
+if bcbio_cores > 64 :
+    bcbio_cores = 64
 
 rule run_bcbio:
     input:

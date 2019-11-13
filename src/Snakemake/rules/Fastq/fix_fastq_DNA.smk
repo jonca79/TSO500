@@ -5,7 +5,7 @@ fastq1_files = ["fastq_temp/DNA/" + s + "_" + i + "_R1_001.fastq.gz" for s,i in 
 fastq2_files =  ["fastq_temp/DNA/" + s + "_" + i + "_R2_001.fastq.gz" for s,i in zip(config["DNA_Samples"], S_dna)]
 
 
-rule fix_fastq_bs2:
+rule fix_fastq_bash_DNA:
     input:
         fastq1 = fastq1_files,
         fastq2 = fastq2_files
