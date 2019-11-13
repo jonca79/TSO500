@@ -25,7 +25,7 @@ rule run_TSO500:
         "/data/illumina/TSO500/TruSight_Oncology_500_1.3.0.singularity.sh --resourcesFolder /data/illumina/TSO500/resources.1.3.0/ "
         "--analysisFolder /scratch/TSO500/ --runFolder /scratch/{params.folder}/ --sampleSheet {input.sample_sheet} && "
         #"--analysisFolder /scratch/TSO500/ --runFolder {params.runfolder}/ --sampleSheet {input.sample_sheet} && "
-        "rsync -Prv /scratch/TSO500/ . && "
+        "rsync -Prv /scratch/TSO500/* TSO500/ && "
         "rm -r /scratch/TSO500/ && "
         "rm -r /scratch/{params.folder}/ && "
         "touch TSO500/TSO500_done.txt"
