@@ -58,12 +58,15 @@ rule Arriba:
 
 rule Arriba_HC:
     input:
-        fusions = "Arriba_results/{sample}.fusions.tsv"
+        fusions = "Arriba_results/{sample}.fusions.tsv",
+        refseq = "DATA/refseq_full_hg19.txt"
     output:
         fusions = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv"
     shell:
-        "head -n 1 {input.fusions} > {output.fusions} &&"
-        "grep -P \"\thigh\t\" {input.fusions} >> {output.fusions}"
+        "head -n 1 {input.fusions} > {output.fusions} && "
+        "grep 'high' {input.fusions} >> {output.fusions} || true && "
+        "python src/Add_fusion_exon_name.py {input.refseq} {output.fusions}"
+
 
 rule Arriba_image:
     input:
@@ -71,7 +74,7 @@ rule Arriba_image:
         bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bai = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai"
     output:
-        image = "Results/RNA/{sample}/{sample}.Arrbia.fusions.pdf"
+        image = "Results/RNA/{sample}/{sample}.Arriba.fusions.pdf"
     params:
         image_out_path = "Results/RNA/{sample}/"
     run:

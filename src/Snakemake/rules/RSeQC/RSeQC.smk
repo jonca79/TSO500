@@ -1,6 +1,4 @@
 
-#Read length = 101?
-
 rule bam_stat:
     input:
         bam = "TST170/RNA_IntermediateFiles/Alignment/{sample}.bam"
@@ -90,7 +88,8 @@ rule inner_distance:
 
 rule read_distribution:
     input:
-        bam = "TST170/RNA_IntermediateFiles/Alignment/{sample}.bam"
+        bam = "TST170/RNA_IntermediateFiles/Alignment/{sample}.bam",
+        bed = "DATA/hg19_RefSeq.bed"
     output:
         stats = "Results/RNA/{sample}/QC/RSeQC_read_distribution.txt"
     singularity:
@@ -100,7 +99,8 @@ rule read_distribution:
 
 rule junction_annotation:
     input:
-        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
+        bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
+        bed = "DATA/hg19_RefSeq.bed"
     output:
         bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed",
         xls = "Results/RNA/{sample}/QC/RSeQC.junction.xls",

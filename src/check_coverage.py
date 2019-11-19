@@ -4,7 +4,7 @@ import sys
 
 path = "/gluster-storage-volume/data/ref_data/wp1/refFiles_20191010/refFiles/"
 #infiles = ["Mutations_Colon_20171219.csv", "Mutations_Lung_20190211.csv", "Mutations_Melanom_20190211.csv", "Mutations_Ovarial_20170125.csv", "Mutations_Gist_20190211.csv"]
-infiles = ["Mutations_Colon_20171219.csv", "Mutations_Lung_20190211.csv", "Mutations_Melanom_20190211.csv", "Mutations_Gist_20190211.csv"]
+infiles = ["Mutations_Colon_20171219.csv", "Mutations_Lung_20190211.csv", "Mutations_Melanom_20190211.csv", "Mutations_Gist_20190211.csv","Mutations_Ovarial_20170125_header_ok.csv"]
 
 bam_file = sys.argv[1]
 outfile = open(sys.argv[2], "w")

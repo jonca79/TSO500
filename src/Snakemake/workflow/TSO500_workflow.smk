@@ -1,6 +1,6 @@
 
 include: "../rules/Fastq/demultiplex.smk"
- 
+
 if config["DNA_Samples"] != "No DNA" :
     include: "../rules/Illumina_SampleSheets/TSO500_SampleSheet.smk"
     include: "../rules/Illumina_TSO500/Illumina_TSO500.smk"
@@ -19,4 +19,5 @@ if config["RNA_Samples"] != "No RNA" :
     include: "../rules/exon_splicing/exon_splicing.smk"
     include: "../rules/Illumina_TST170/Illumina_TST170.smk"
     include: "../rules/Collect_results/Collect_results_RNA.smk"
+    include: "../rules/RSeQC/RSeQC.smk"
 #include: "../rules/Collect_results/Collect_results.smk"

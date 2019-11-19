@@ -1,6 +1,6 @@
 
 
-rule check_coverage:
+rule check_DNA_coverage:
     input:
         bam = "Results/DNA/{sample}/{sample}-ready.bam"
     output:

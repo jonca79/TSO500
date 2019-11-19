@@ -1,8 +1,4 @@
 
-
-singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
-
-
 rule fix_bed_file :
     input:
         bed = "DATA/TST500C_manifest.bed"
@@ -14,11 +10,11 @@ rule fix_bed_file :
 
 rule Tumor_levels:
     input:
-        #bam = lambda wildcards: config["Tumor_samples"][wildcards.sample],
-        bam = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bam = "final/{sample}/{sample}-ready.bam",
         stats = "ref/Control_stats.txt"
     output:
         stats = "stats/{sample}.stats.txt"
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
     shell:
         "perl ONCOCNV/ONCOCNV_getCounts.pl getSampleStats "
         "-m Ampli "
@@ -41,6 +37,7 @@ rule Target_GC:
         reference = "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta"
     output:
         GC = "ref/target.GC.txt"
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
     shell:
         "perl ONCOCNV/createTargetGC.pl "
         "-bed {input.bed} "
@@ -55,6 +52,7 @@ rule Calls:
         control_stats = "ref/Control_stats.Processed.txt"
     output:
         call = "CNV_calls/{sample}.output.txt"
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/ONCOCNV.simg"
     shell:
         "cat ONCOCNV/processSamples.R | R --slave "
         "--args {input.tumor_stats} {input.control_stats} {output.call} "
@@ -62,15 +60,10 @@ rule Calls:
 
 rule CNV_event:
     input:
-        #calls = ["CNV_calls/" + sample_id + ".output.txt" for sample_id in config["Tumor_samples"]]
         calls = ["CNV_calls/" + sample_id + ".output.txt" for sample_id in config["DNA_Samples"]]
     output:
         cnv_event = "CNV_calls/cnv_event.txt"
-    shell :
+    shell:
         "python src/cnv_event.py "
         "{input.calls} "
         "{output.cnv_event}"
-
-
-#snakemake -np -j 32 --drmaa "-A wp4 -s -p core -n 1 -t 10:00:00"  -s ./ONCOCNV.smk --use-singularity --singularity-args "--bind /data --bind /gluster-storage-volume --bind /projects  " --restart-times 5
-#snakemake -np -j 16 --drmaa "-A wp4 -s -p core -n 1 -t 10:00:00"  -s ./ONCOCNV.smk --use-singularity --singularity-args "--bind /data --bind /projects  "

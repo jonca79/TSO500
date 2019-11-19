@@ -20,13 +20,9 @@ rule run_TST170:
 
 rule TST170_QC_coverage:
     input:
-        #bam = "TST170/RNA_IntermediateFiles/Alignment/{sample}.bam"
         bam = "Results/RNA/{sample}/{sample}.bam"
     output:
         coverage = "Results/RNA/{sample}/Housekeeping_gene_coverage.txt"
     run:
         import subprocess
         subprocess.call("python src/RNA_coverage.py " + input.bam + " " + output.coverage, shell=True)
-
-
-#snakemake -np -j 1 --drmaa "-A wp4 -s -p core -n 16 -t 48:00:00 "  -s ./Illumina_TST170.smk

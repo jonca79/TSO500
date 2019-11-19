@@ -1,7 +1,6 @@
 
 rule imbalance :
     input:
-        #bams = ["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]]
         bams = ["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]]
     output:
         imbalance_all = "Results/RNA/imbalance_all_gene.txt",

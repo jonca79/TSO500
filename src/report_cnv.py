@@ -155,21 +155,23 @@ for line in cnv_event :
     vcf_cn = round(2 + (cn_100 - 2) * (1/vcf_purity),1)
     for gene in genes :
         OG_CN = 2
-        if sample in relevant_genes[gene] :
+        sample2 = sample.split("-ready")[0]
+        print(gene, relevant_genes[gene], sample2)
+        if sample2 in relevant_genes[gene] :
             if Copy_ratio > 0 :
-                OG_CN = relevant_genes[gene][sample][1]
+                OG_CN = relevant_genes[gene][sample2][1]
             else :
-                OG_CN = relevant_genes[gene][sample][0]
+                OG_CN = relevant_genes[gene][sample2][0]
         OG_CN_purity = round(2 + (OG_CN - 2) * (1/vcf_purity),1)
         if analysis_type == "TSO500" :
             if vcf_cn > 6.0 and OG_CN_purity > 6.0 :
-                cnv_relevant.write(long_sample + "\t" + sample + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
+                cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
         elif analysis_type == "Twist_WP2" :
             if vcf_cn > 6.0 and OG_CN_purity > 6.0 :
-                cnv_relevant.write(long_sample + "\t" + sample + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
+                cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
         elif analysis_type == "Twist_WP1" :
             if vcf_cn > 6.0 and OG_CN_purity > 6.0 :
-                cnv_relevant.write(long_sample + "\t" + sample + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
+                cnv_relevant.write(long_sample + "\t" + sample2 + "\t" + gene + "\t" + chrom + "\t" + str(start_pos) + "-" + str(end_pos) + "\t" + str(round(Copy_ratio,2)) + "\t" + str(cn_100) + "\t" + str(OG_CN) + "\t" + str(vcf_purity) + "\t" + str(vcf_cn) + "\t" + str(OG_CN_purity) + "\n")
 cnv_relevant.close()
 
 

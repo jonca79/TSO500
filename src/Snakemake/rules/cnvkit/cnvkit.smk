@@ -1,7 +1,5 @@
 
 
-singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
-
 
 
 rule Create_targets:
@@ -10,6 +8,7 @@ rule Create_targets:
     output:
         bed = "bed/manifest.target.bed"
     threads: 1
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
     shell:
         "cnvkit.py target "
         "--split "
@@ -22,6 +21,7 @@ rule Create_anti_targets:
     output:
         bed = "bed/manifest.antitarget.bed"
     threads: 1
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
     shell:
         "cnvkit.py antitarget "
         "{input.bed} "
@@ -40,6 +40,7 @@ rule Call_cnv:
         #segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["Tumor_samples"]]
         segments = ["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]],
     threads: 8
+    singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit.simg"
     shell:
         "cnvkit.py batch "
         "{input.bams} "

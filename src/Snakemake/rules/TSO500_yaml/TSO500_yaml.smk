@@ -26,7 +26,7 @@ rule Create_TSO500_yaml:
         RNA_sample_list = []
         #KG_runname = os.getcwd().split("/")[-1]
         i = 1
-        sample_sheet_name = glob.glob("*samplesheet.csv")
+        sample_sheet_name = glob.glob("*heet.csv")
         if len(sample_sheet_name) > 1 :
             print("Error: Something wrong with the sample sheet name!")
             quit()
@@ -75,12 +75,5 @@ rule Create_TSO500_yaml:
             outfile.write("\nRNA_Samples:\n")
             for sample in RNA_sample_list :
                 outfile.write("  " + sample[0] + ": \"S" + str(sample[1]) + "\"\n")
-        #outfile.write("\nNormal_samples:\n\nTumor_samples:\n")
-        #for sample in DNA_sample_list :
-        #    outfile.write("  \"" + sample[0] + "\": /beegfs/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/final/" + sample[0] + "/" + sample[0] + "-ready.bam\n")
         outfile.close()
         outfile2.close()
-
-
-
-#snakemake -np -j 1 --drmaa "-A wp4 -s -p core -n 1 -t 2:00:00 "  -s ./TSO500_yaml.smk
