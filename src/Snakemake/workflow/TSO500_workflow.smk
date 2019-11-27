@@ -14,6 +14,7 @@ if config["DNA_Samples"] != "No DNA" :
 if config["RNA_Samples"] != "No RNA" :
     include: "../rules/Illumina_SampleSheets/TST170_SampleSheet.smk"
     include: "../rules/Fastq/fix_fastq_RNA.smk"
+    include: "../rules/Adapter_trimming/Adapter_trimming.smk"
     include: "../rules/Arriba/Arriba.smk"
     include: "../rules/Imbalance/Imbalance.smk"
     include: "../rules/exon_splicing/exon_splicing.smk"

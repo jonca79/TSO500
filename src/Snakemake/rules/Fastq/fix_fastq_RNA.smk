@@ -37,7 +37,7 @@ rule fix_fastq_run_RNA:
     input:
         bash_scripts_RNA = "fastq_temp/RNA/{sample}.fix_fastq.sh"
     output:
-        merged_fastq_R1_RNA = "fastq/RNA/{sample}_R1.fastq.gz",
-        merged_fastq_R2_RNA = "fastq/RNA/{sample}_R2.fastq.gz"
+        merged_fastq_R1_RNA = "fastq/RNA/{sample}_R1_untrimmed.fastq.gz",
+        merged_fastq_R2_RNA = "fastq/RNA/{sample}_R2_untrimmed.fastq.gz"
     shell:
         "{input.bash_scripts_RNA}"
