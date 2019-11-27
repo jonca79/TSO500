@@ -17,6 +17,8 @@ rule clipping_profile:
         pdf_R1 = "Results/RNA/{sample}/QC/RSeQC.clipping_profile.R1.pdf",
         pdf_R2 = "Results/RNA/{sample}/QC/RSeQC.clipping_profile.R2.pdf",
         xls = "Results/RNA/{sample}/QC/RSeQC.clipping_profile.xls"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -29,6 +31,8 @@ rule deletion_profile:
         pdf = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.pdf",
         R_script = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.r",
         data = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.txt"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -42,6 +46,8 @@ rule insertion_profile:
         pdf_R1 = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.R1.pdf",
         pdf_R2 = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.R2.pdf",
         xls = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.xls"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -53,8 +59,10 @@ rule read_duplication:
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.pdf",
-        xls_pos = "Results/RNA/{sample}/QC/RSeQC.dup.pos.DupRate.xls",
-        xls_seq = "Results/RNA/{sample}/QC/RSeQC.dup.seq.DupRate.xls"
+        #xls_pos = "Results/RNA/{sample}/QC/RSeQC.dup.pos.DupRate.xls",
+        #xls_seq = "Results/RNA/{sample}/QC/RSeQC.dup.seq.DupRate.xls"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -67,6 +75,8 @@ rule read_GC:
         R_script = "Results/RNA/{sample}/QC/RSeQC.GC_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.GC_plot.pdf",
         xls = "Results/RNA/{sample}/QC/RSeQC.GC.xls"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -81,6 +91,8 @@ rule inner_distance:
         pdf = "Results/RNA/{sample}/QC/RSeQC.inner_distance_plot.pdf",
         data = "Results/RNA/{sample}/QC/RSeQC.inner_distance.txt",
         data_freq = "Results/RNA/{sample}/QC/RSeQC.inner_distance_freq.txt"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -105,10 +117,12 @@ rule junction_annotation:
         bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed",
         xls = "Results/RNA/{sample}/QC/RSeQC.junction.xls",
         interactive_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed",
-        pdf1 = "Results/RNA/{sample}/QC/RSeQC.junction_plot.pdf",
+        #pdf1 = "Results/RNA/{sample}/QC/RSeQC.junction_plot.pdf",
         R_script = "Results/RNA/{sample}/QC/RSeQC.junction_plot.r",
         pdf2 = "Results/RNA/{sample}/QC/RSeQC.splice_events.pdf",
         pdf3 = "Results/RNA/{sample}/QC/RSeQC.splice_junction.pdf"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -120,8 +134,10 @@ rule geneBody_coverage:
         bed = "DATA/hg19.HouseKeepingGenes.bed"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.r",
-        pdf = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.pdf",
+        #pdf = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.pdf",
         data = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.txt"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:
@@ -134,6 +150,8 @@ rule FPKM_count:
         bed = "DATA/hg19_RefSeq.bed"
     output:
         xls = "Results/RNA/{sample}/QC/RSeQC.FPKM.xls"
+    singularity:
+        "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC"
     shell:

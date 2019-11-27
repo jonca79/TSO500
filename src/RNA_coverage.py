@@ -2,12 +2,12 @@
 import subprocess
 import sys
 
-bedfilename = "bed/manifest.target.bed"
 genes = ["PIK3CA", "MYC", "EML4"]
 
 bam_file = sys.argv[1]
-outfile = open(sys.argv[2], "w")
-outfile.write("Sample\tGene\tAvg_coverage\n")
+bedfilename = sys.argv[2]
+outfile = open(sys.argv[3], "w")
+outfile.write("Sample\tGene\tAvg_coverage\t200bp_avg_bins\n")
 
 
 for gene in genes :
@@ -20,6 +20,7 @@ for gene in genes :
     bedfile.close()
     coverage_sum = 0
     coverage_nr_pos = 0
+    coverage_list = []
     for region in regions :
         region = region[0] + ":" + region[1] + "-" + region[2]
         sample = bam_file.split("/")[-2]
@@ -31,6 +32,23 @@ for gene in genes :
             coverage = int(line.strip().split("\t")[2])
             coverage_sum += coverage
             coverage_nr_pos += 1
+            coverage_list.append(coverage)
         depthfile.close()
-    outfile.write(sample + "\t" + gene + "\t" + str(round(coverage_sum/float(coverage_nr_pos),1)) + "\n")
+    cov_bins = []
+    cov_bin = 0
+    i = 0
+    for cov in coverage_list :
+        if i > 0 and i % 200 == 0 :
+            cov_bins.append(cov_bin / 200.0)
+            cov_bin = 0
+        cov_bin += cov
+        i += 1
+    if i > 0 and i % 200 == 0 :
+        cov_bins.append(cov_bin / 200.0)
+    else :
+        cov_bins.append(cov_bin / float((i % 200)))
+    outfile.write(sample + "\t" + gene + "\t" + str(round(coverage_sum/float(coverage_nr_pos),1)))
+    for cov_bin in cov_bins :
+        outfile.write("\t" + str(round(cov_bin,1)))
+    outfile.write("\n")
 outfile.close()

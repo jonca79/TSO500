@@ -35,7 +35,7 @@ rule STAR_arrbia:
         command += "--outFileNamePrefix STAR/" + wildcards.sample
         print(command)
         subprocess.call(command, shell=True)
-        subprocess.call("samtools index " + output.bams)
+        subprocess.call("samtools index " + output.bams, shell=True)
 
 
 rule Arriba:

@@ -44,12 +44,11 @@ def get_input():
         input_list.append("SampleSheet.csv")
         input_list.append(["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]])
-        #input_list.append(["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
 
         '''Fusions'''
         input_list.append(["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/" + s + ".Arriba.HighConfidence.fusions.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/" + s + ".Arrbia.fusions.pdf" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/" + s + ".Arriba.fusions.pdf" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
         input_list.append("Results/RNA/imbalance_all_gene.txt")

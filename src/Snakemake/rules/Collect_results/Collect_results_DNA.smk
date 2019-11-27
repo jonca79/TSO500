@@ -16,8 +16,8 @@ rule intron_filter:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.no.introns.vcf"
-    run:
-        shell("python3 src/filter_TSO500_introns.py {input.vcf}")
+    shell :
+        "python3 src/filter_TSO500_introns.py {input.vcf}"
 
 rule ffpe_filter:
     input:
@@ -25,8 +25,10 @@ rule ffpe_filter:
         bam = "Results/DNA/{sample}/{sample}-ready.bam"
     output:
         vcf = "Results/DNA/{sample}/{sample}-ensemble.final.no.introns.ffpe.vcf"
-    run:
-        shell("java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {output.vcf}")
+    shell:
+        #"module load oracle-jdk-1.8/1.8.0_162 && "
+        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {output.vcf}"
+        #"java -jar SOBDetector/SOBDetector_v1.0.1.jar {input.vcf} --input-bam {input.bam} --input-type VCF --output-variants {output.vcf}"
 
 rule copy_biomarker:
     input:
