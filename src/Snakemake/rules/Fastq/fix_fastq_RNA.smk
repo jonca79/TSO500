@@ -25,7 +25,7 @@ rule fix_fastq_RNA_bash:
             bs.write("\tsample_number=$1;\n")
             bs.write("\tsample=$2\n")
             bs.write("\t\tfor r in R1 R2; do\n")
-            bs.write("\t\t\techo \"zcat fastq_temp/RNA/\"$sample\"_\"$sample_number\"_\"$r\"* | awk '{if(/^@/){split(\$0,a,\\\":\\\");print(a[1]\\\":\\\"a[2]\\\":\\\"a[3]\\\":\\\"a[4]\\\":\\\"a[5]\\\":\\\"a[6]\\\":\\\"a[7]\\\":UMI_\\\"gsub(\\\"+\\\",\\\"\\\",a[8])\\\":\\\"a[9]\\\":\\\"a[10]\\\":\\\"a[11])}else{print(\$0)}}' | gzip > fastq/RNA/\"$sample\"_\"$r\".fastq.gz &\";\n")
+            bs.write("\t\t\techo \"zcat fastq_temp/RNA/\"$sample\"_\"$sample_number\"_\"$r\"* | awk '{if(/^@/){split(\$0,a,\\\":\\\");print(a[1]\\\":\\\"a[2]\\\":\\\"a[3]\\\":\\\"a[4]\\\":\\\"a[5]\\\":\\\"a[6]\\\":\\\"a[7]\\\":UMI_\\\"gsub(\\\"+\\\",\\\"\\\",a[8])\\\":\\\"a[9]\\\":\\\"a[10]\\\":\\\"a[11])}else{print(\$0)}}' | gzip > fastq/RNA/\"$sample\"_\"$r\"_untrimmed.fastq.gz &\";\n")
             bs.write("\t\tdone  | bash -\n")
             bs.write("done\n")
             bs.write("sleep 3600\n")

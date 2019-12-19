@@ -16,6 +16,7 @@ rule run_TST170:
         subprocess.call("mv TST170/" + TST170_outfolder + "/RNA_IntermediateFiles/Alignment/* TST170/RNA_IntermediateFiles/Alignment/", shell=True)
         subprocess.call("mkdir TST170/Fastq/", shell=True)
         subprocess.call("mv TST170/" + TST170_outfolder + "/Fastqs/*.fastq.gz TST170/Fastq/", shell=True)
+        subprocess.call("mv TST170/" + TST170_outfolder + "/*.* TST170/", shell=True)
         for sample in params.samples :
             subprocess.call("mv TST170/" + TST170_outfolder + "/RNA_" + sample + "/* TST170/RNA_" + sample + "/", shell=True)
 
