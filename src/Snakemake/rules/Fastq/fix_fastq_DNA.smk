@@ -10,8 +10,8 @@ rule fix_fastq_bash_DNA:
         fastq1 = fastq1_files,
         fastq2 = fastq2_files
     output:
-        bash_scripts_dna = ["fastq_temp/DNA/" + s + "_R1.fix_fastq.sh" for s in config["DNA_Samples"]],
-        bash_scripts_dna = ["fastq_temp/DNA/" + s + "_R2.fix_fastq.sh" for s in config["DNA_Samples"]]
+        bash_scripts_dna_R1 = ["fastq_temp/DNA/" + s + "_R1.fix_fastq.sh" for s in config["DNA_Samples"]],
+        bash_scripts_dna_R2 = ["fastq_temp/DNA/" + s + "_R2.fix_fastq.sh" for s in config["DNA_Samples"]]
     params:
         DNA_samples = [s for s in config["DNA_Samples"]]
     run:
