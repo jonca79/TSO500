@@ -63,17 +63,18 @@ rule fix_BcBio_res_map:
     input:
         bams = ["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]]
     output:
-        multiqc_report = "Results/DNA/multiqc_report.html"
+        multiqc_report = "Results/DNA/multiqc_report.html",
+        vcf = ["BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     params:
         samples = config["DNA_Samples"]
     run:
         shell("mkdir BcBio/ && "
             "mkdir BcBio/bam_files/ && "
-            "mkdir BcBio/vcf_files/ && "
+            #"mkdir BcBio/vcf_files/ && "
             "mkdir BcBio/QC_files/ && ")
         import subprocess
         for sample in params.samples :
-            subprocess.call("mkdir BcBio/vcf_files/" + sample + "/", shell=True)
+            #subprocess.call("mkdir BcBio/vcf_files/" + sample + "/", shell=True)
             subprocess.call("mkdir BcBio/QC_files/" + sample + "/", shell=True)
             subprocess.call("mv -r final/" + sample + "/qc/ BcBio/QC_files/" + sample + "/QC/ ", shell=True)
             subprocess.call("mv final/" + sample + "/* BcBio/vcf_files/" + sample + "/ ", shell=True)

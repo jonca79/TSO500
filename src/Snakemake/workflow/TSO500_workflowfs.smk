@@ -6,8 +6,8 @@ if config["DNA_Samples"] != "No DNA" :
     include: "../rules/Illumina_TSO500/Illumina_TSO500.smk"
     include: "../rules/Fastq/fix_fastq_DNA.smk"
     include: "../rules/Bcbio/Bcbiofs.smk"
-    include: "../rules/ONCOCNV/ONCOCNV.smk"
-    include: "../rules/cnvkit/cnvkit.smk"
+    include: "../rules/ONCOCNV/ONCOCNVfs.smk"
+    include: "../rules/cnvkit/cnvkitfs.smk"
     include: "../rules/DNA_coverage/check_coveragefs.smk"
     include: "../rules/Collect_results/Collect_results_DNAfs.smk"
 

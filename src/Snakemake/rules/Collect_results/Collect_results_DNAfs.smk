@@ -34,27 +34,29 @@ rule copy_biomarker:
     input:
         TSO500_done = "TSO500/TSO500_done.txt"
     output:
-        biomarker = ["Results/DNA/" + s + "/TSO500/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]],
-        metrics = ["Results/DNA/" + s + "/TSO500/MetricsReport.tsv" for s in config["DNA_Samples"]]
+        biomarker = ["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]],
+        metrics = "Results/DNA/MetricsReport.tsv"
     params:
         samples = config["DNA_Samples"]
     run:
         import subprocess
         for sample in params.samples :
-            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/TSO500/", shell=True)
-            subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/" + sample + "/TS0500/", shell=True)
+            subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
+        subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/", shell=True)
 
 rule copy_bam:
     input:
-        bam = "BcBio/bam_files/{sample}-ready.bam",
+        bam = "final/bam/{sample}-ready.bam"
         #bai = "final/{sample}/{sample}-ready.bam.bai"
     output:
         #bam = "Results/DNA/{sample}/{sample}-ready.bam",
         #bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
+        bam = "BcBio/bam_files/{sample}-ready.bam",
         bai = "BcBio/bam_files/{sample}-ready.bam.bai"
     run:
         #shell("cp {input.bam} {output.bam}")
         #shell("cp {input.bai} {output.bai}")
+        shell("mv {input.bam} {output.bam}")
         shell("samtools index {input.bam}")
 
 rule copy_CNV:

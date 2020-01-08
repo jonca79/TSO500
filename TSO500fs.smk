@@ -6,7 +6,7 @@ def get_input():
     if config["DNA_Samples"] != "No DNA" :
         '''Illumina TSO500'''
         input_list.append(config["Sample_sheet"] + ".TSO500.csv")
-        input_list.append(["Results/DNA/" + s + "/MetricsReport.tsv" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/MetricsReport.tsv"])
         input_list.append(["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]])
 
         '''Demultiplexning'''
@@ -81,4 +81,4 @@ rule all:
         get_input()
 
 
-include: "src/Snakemake/workflow/TSO500_workflow.smk"
+include: "src/Snakemake/workflow/TSO500_workflowfs.smk"
