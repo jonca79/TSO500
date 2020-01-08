@@ -16,7 +16,7 @@ if config["RNA_Samples"] != "No RNA" :
     include: "../rules/Fastq/fix_fastq_RNA.smk"
     include: "../rules/Adapter_trimming/Adapter_trimming.smk"
     include: "../rules/Arriba/Arribafs.smk"
-    include: "../rules/Imbalance/Imbalance.smk"
+    include: "../rules/Imbalance/Imbalancefs.smk"
     include: "../rules/exon_splicing/exon_splicing.smk"
     include: "../rules/Illumina_TST170/Illumina_TST170fs.smk"
     include: "../rules/Collect_results/Collect_results_RNAfs.smk"

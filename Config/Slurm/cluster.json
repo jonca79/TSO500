@@ -14,7 +14,7 @@
     "Arriba" : {"n" : 4},
     "demultiplex": {"n" : 16,
                     "time" : "4:00:00"},
-    "fix_fastq_run": {"n": 2},
+    "fix_fastq_run_DNA": {"time" : "3:00:00"},
     "run_bcbio" : {"time" : "48:00:00"},
     "run_TSO500" : {"n" : 16,
                     "time" : "32:00:00"},

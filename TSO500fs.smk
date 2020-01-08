@@ -44,7 +44,7 @@ def get_input():
         '''TST170'''
         input_list.append("SampleSheet.csv")
         input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
-        input_list.append(["TST170_bam/" + s + ".bam" for s in config["RNA_Samples"]])
+        input_list.append(["TST170/" + s + ".bam" for s in config["RNA_Samples"]])
 
         '''Fusions'''
         input_list.append(["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])

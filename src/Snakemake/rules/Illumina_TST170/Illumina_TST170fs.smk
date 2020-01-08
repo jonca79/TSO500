@@ -22,7 +22,8 @@ rule run_TST170:
 
 rule TST170_QC_coverage:
     input:
-        bam = "TST170/{sample}.bam",
+        #bam = "TST170/{sample}.bam",
+        bam = ["TST170/" + s + ".bam" for s in config["RNA_Samples"]],
         bed = "DATA/TST500C_manifest.bed"
     output:
         coverage = "Results/RNA/{sample}/Housekeeping_gene_coverage.txt"
