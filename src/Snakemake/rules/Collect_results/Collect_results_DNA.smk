@@ -4,7 +4,7 @@ localrules: copy_biomarker, copy_CNV
 
 rule ensemble_filter:
     input:
-        vcf = "BcBio/vcf_files/{sample}/{sample}-ensemble.vcf.gz"
+        vcf = "DNA_BcBio/vcf_files/{sample}/{sample}-ensemble.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.vcf.gz"
     run:
@@ -22,7 +22,7 @@ rule intron_filter:
 rule ffpe_filter:
     input:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
-        bam = "BcBio/bam_files/{sample}-ready.bam"
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam"
     output:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf"
     shell:
@@ -30,7 +30,7 @@ rule ffpe_filter:
         "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {output.vcf}"
         #"java -jar SOBDetector/SOBDetector_v1.0.1.jar {input.vcf} --input-bam {input.bam} --input-type VCF --output-variants {output.vcf}"
 
-rule copy_biomarker:
+rule copy_mv_TS0500:
     input:
         TSO500_done = "TSO500/TSO500_done.txt"
     output:
@@ -43,6 +43,16 @@ rule copy_biomarker:
         for sample in params.samples :
             subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
         subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Msi/ DNA_TSO500/Msi/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/StitchedReads/ DNA_TSO500/StitchedReads/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/RunQc/ DNA_TSO500/RunQc/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/VariantCaller/ DNA_TSO500/VariantCaller/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        #TSO500/Logs_Intermediates/Msi TSO500/Results TSO500/Logs_Intermediates/StitchedReads TSO500/Logs_Intermediates/RunQc TSO500/Logs_Intermediates/VariantCaller
 
 rule copy_bam:
     input:
@@ -51,8 +61,8 @@ rule copy_bam:
     output:
         #bam = "Results/DNA/{sample}/{sample}-ready.bam",
         #bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
-        bam = "BcBio/bam_files/{sample}-ready.bam",
-        bai = "BcBio/bam_files/{sample}-ready.bam.bai"
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
+        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
     run:
         #shell("cp {input.bam} {output.bam}")
         #shell("cp {input.bai} {output.bai}")

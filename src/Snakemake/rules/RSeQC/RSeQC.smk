@@ -1,7 +1,7 @@
 
 rule bam_stat:
     input:
-        bam = "TST170/{sample}.bam"
+        bam = "RNA_TST170/{sample}.bam"
     output:
         stats = "Results/RNA/{sample}/QC/RSeQC_bam_stat.txt"
     singularity:
@@ -26,7 +26,7 @@ rule clipping_profile:
 
 rule deletion_profile:
     input:
-        bam = "TST170/{sample}.bam"
+        bam = "RNA_TST170/{sample}.bam"
     output:
         pdf = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.pdf",
         R_script = "Results/RNA/{sample}/QC/RSeQC.deletion_profile.r",
@@ -40,7 +40,7 @@ rule deletion_profile:
 
 rule insertion_profile:
     input:
-        bam = "TST170/{sample}.bam"
+        bam = "RNA_TST170/{sample}.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.r",
         pdf_R1 = "Results/RNA/{sample}/QC/RSeQC.insertion_profile.R1.pdf",
@@ -55,7 +55,7 @@ rule insertion_profile:
 
 rule read_duplication:
     input:
-        bam = "TST170/{sample}.bam"
+        bam = "RNA_TST170/{sample}.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.DupRate_plot.pdf",
@@ -70,7 +70,7 @@ rule read_duplication:
 
 rule read_GC:
     input:
-        bam = "TST170/{sample}.bam"
+        bam = "RNA_TST170/{sample}.bam"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.GC_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.GC_plot.pdf",
@@ -84,7 +84,7 @@ rule read_GC:
 
 rule inner_distance:
     input:
-        bam = "TST170/{sample}.bam",
+        bam = "RNA_TST170/{sample}.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.inner_distance_plot.r",
@@ -100,7 +100,7 @@ rule inner_distance:
 
 rule read_distribution:
     input:
-        bam = "TST170/{sample}.bam",
+        bam = "RNA_TST170/{sample}.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         stats = "Results/RNA/{sample}/QC/RSeQC_read_distribution.txt"
@@ -130,7 +130,7 @@ rule junction_annotation:
 
 rule geneBody_coverage:
     input:
-        bam = "TST170/{sample}.bam",
+        bam = "RNA_TST170/{sample}.bam",
         bed = "DATA/hg19.HouseKeepingGenes.bed"
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.geneBodyCoverage.r",
@@ -146,7 +146,7 @@ rule geneBody_coverage:
 
 rule FPKM_count:
     input:
-        bam = "TST170/{sample}.bam",
+        bam = "RNA_TST170/{sample}.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
         xls = "Results/RNA/{sample}/QC/RSeQC.FPKM.xls"

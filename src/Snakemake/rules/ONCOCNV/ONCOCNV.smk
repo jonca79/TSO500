@@ -10,7 +10,7 @@ rule fix_bed_file :
 
 rule Tumor_levels:
     input:
-        bam = "BcBio/bam_files/{sample}-ready.bam",
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         stats = "ref/Control_stats.txt"
     output:
         stats = "stats/{sample}.stats.txt"
