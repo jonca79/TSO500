@@ -32,7 +32,7 @@ rule Create_anti_targets:
 rule Call_cnv:
     input:
         #bams = expand("{tumor_sample}", tumor_sample=config["Tumor_samples"].values()),
-        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bams = ["BcBio/bam_files/" + s + "-ready.bam" for s in config["DNA_Samples"]],
         cnv_reference = "ref/normal_reference.cnn"
     output:
         #regions = ["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["Tumor_samples"]],

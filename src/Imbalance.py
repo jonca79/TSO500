@@ -29,7 +29,8 @@ for bam in bam_files :
     exon_result_dict[bam] = {}
     print(bam)
     print(bam_dict[bam])
-    sample = bam.split("/")[-1].split("Aligned")[0]
+    #sample = bam.split("/")[-1].split("Aligned")[0]
+    sample = bam.split("/")[-1].split(".bam")[0]
     for gene in gene_files :
         exon_result_dict[bam][gene] = []
         print(gene)

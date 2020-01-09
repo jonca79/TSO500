@@ -61,7 +61,7 @@ rule Arriba_HC:
         fusions = "Arriba_results/{sample}.fusions.tsv",
         refseq = "DATA/refseq_full_hg19.txt"
     output:
-        fusions = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv"
+        fusions = "Results/RNA/{sample}/Fusions/{sample}.Arriba.HighConfidence.fusions.tsv"
     shell:
         "head -n 1 {input.fusions} > {output.fusions} && "
         "grep 'high' {input.fusions} >> {output.fusions} || true && "
@@ -70,13 +70,13 @@ rule Arriba_HC:
 
 rule Arriba_image:
     input:
-        fusion = "Results/RNA/{sample}/{sample}.Arriba.HighConfidence.fusions.tsv",
+        fusion = "Results/RNA/{sample}/Fusions/{sample}.Arriba.HighConfidence.fusions.tsv",
         bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bai = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai"
     output:
-        image = "Results/RNA/{sample}/{sample}.Arriba.fusions.pdf"
+        image = "Results/RNA/{sample}/Fusions/{sample}.Arriba.fusions.pdf"
     params:
-        image_out_path = "Results/RNA/{sample}/"
+        image_out_path = "Results/RNA/{sample}/Fusions/"
     run:
         import subprocess
         command = "singularity exec "

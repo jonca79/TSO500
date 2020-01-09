@@ -25,7 +25,7 @@ for line in inbed :
 outpath = ""
 for folder in invcf.split("/")[:-1] :
     outpath += folder + "/"
-outvcffilename = outpath + invcf.split("/")[-2] + "-ensemble.final.no.introns.vcf"
+outvcffilename = outpath + invcf.split("/")[-3] + "-ensemble.final.no.introns.vcf"
 outvcf = open(outvcffilename, "w")
 with gzip.open(invcf,'rt') as f:
     data = f.read().split("\n")

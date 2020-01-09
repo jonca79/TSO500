@@ -51,10 +51,32 @@ rule run_bcbio:
         config = "config.yaml",
         bcbio_moriarty_config = "DATA/bcbio_system_Moriarty.yaml"
     output:
-        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
-        bais = ["final/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
-        vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
+        bams = ["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bais = ["final/bam/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
+        vcf = ["final/vcf/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     params:
         bcbio_nr_cores = str(bcbio_cores)
     shell:
         "module load bcbio-nextgen/1.0.5; module load slurm; bcbio_nextgen.py {input.bcbio_moriarty_config} {input.config} -t ipython -s slurm -q core -n {params.bcbio_nr_cores} -r \"time=48:00:00\" -r \"job-name=wp1_bcbio-nextgen\" -r \"export=JAVA_HOME,BCBIO_JAVA_HOME\" -r \"account=wp1\" --timeout 99999"
+
+rule fix_BcBio_res_map:
+    input:
+        bams = ["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]]
+    output:
+        multiqc_report = "Results/DNA/multiqc_report.html",
+        vcf = ["BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
+    params:
+        samples = config["DNA_Samples"]
+    run:
+        shell("mkdir BcBio/ && "
+            "mkdir BcBio/bam_files/ && "
+            #"mkdir BcBio/vcf_files/ && "
+            "mkdir BcBio/QC_files/ && ")
+        import subprocess
+        for sample in params.samples :
+            #subprocess.call("mkdir BcBio/vcf_files/" + sample + "/", shell=True)
+            subprocess.call("mkdir BcBio/QC_files/" + sample + "/", shell=True)
+            subprocess.call("mv -r final/" + sample + "/qc/ BcBio/QC_files/" + sample + "/QC/ ", shell=True)
+            subprocess.call("mv final/" + sample + "/* BcBio/vcf_files/" + sample + "/ ", shell=True)
+        subprocess.call("cp -r final/*/multiqc/ BcBio/QC_files/", shell=True)
+        subprocess.call("cp BcBio/QC_files/multiqc/multiqc_report.html Results/DNA/multiqc_report.html", shell=True)

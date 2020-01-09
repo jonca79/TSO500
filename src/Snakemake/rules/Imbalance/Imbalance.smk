@@ -1,7 +1,7 @@
 
 rule imbalance :
     input:
-        bams = ["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]]
+        bams = ["TST170/" + s + ".bam" for s in config["RNA_Samples"]]
     output:
         imbalance_all = "Results/RNA/imbalance_all_gene.txt",
         imbalance = "Results/RNA/imbalance_called_gene.txt"

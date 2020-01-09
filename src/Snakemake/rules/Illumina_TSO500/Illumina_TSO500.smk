@@ -2,7 +2,7 @@
 rule run_TSO500:
     input:
         sample_sheet = config["Sample_sheet"] + ".TSO500.csv"
-    output :
+    output:
          TSO500_done = "TSO500/TSO500_done.txt"
     params:
         runfolder = config["Runfolder"][:-1],

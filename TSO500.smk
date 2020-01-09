@@ -6,7 +6,7 @@ def get_input():
     if config["DNA_Samples"] != "No DNA" :
         '''Illumina TSO500'''
         input_list.append(config["Sample_sheet"] + ".TSO500.csv")
-        input_list.append(["Results/DNA/" + s + "/MetricsReport.tsv" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/MetricsReport.tsv"])
         input_list.append(["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]])
 
         '''Demultiplexning'''
@@ -15,25 +15,26 @@ def get_input():
 
         '''Bcbio'''
         #input_list.append("config.yaml")
-        input_list.append(["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]])
-        input_list.append(["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]])
+        input_list.append(["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]])
+        input_list.append(["final/vcf/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]])
+        input_list.append("Results/DNA/multiqc_report.html")
 
         '''Variant filtering'''
-        input_list.append(["Results/DNA/" + s + "/" + s + "-ensemble.final.no.introns.vcf" for s in config["DNA_Samples"]])
-        input_list.append(["Results/DNA/" + s + "/" + s + "-ensemble.final.no.introns.ffpe.vcf" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.vcf" for s in config["DNA_Samples"]])
 
         '''CNV'''
         input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
         input_list.append(["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]])
         input_list.append("CNV_results/relevant_cnv.txt")
         input_list.append("CNV_calls/cnv_event.txt")
-        input_list.append(["Results/DNA/" + s + "/" + s + "-ready.png" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/CNV/" + s + "-ready.png" for s in config["DNA_Samples"]])
 
         '''QC'''
-        input_list.append(["Results/DNA/" + s + "/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
 
         '''Collect results'''
-        input_list.append(["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
+        #input_list.append(["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
 
     if config["RNA_Samples"] != "No RNA" :
         '''Demultiplexning'''
@@ -42,13 +43,13 @@ def get_input():
 
         '''TST170'''
         input_list.append("SampleSheet.csv")
-        input_list.append(["Results/RNA/" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/" + s + ".bam" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
+        input_list.append(["TST170/" + s + ".bam" for s in config["RNA_Samples"]])
 
         '''Fusions'''
         input_list.append(["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/" + s + ".Arriba.HighConfidence.fusions.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/" + s + ".Arriba.fusions.pdf" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + ".Arriba.HighConfidence.fusions.tsv" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + ".Arriba.fusions.pdf" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
         input_list.append("Results/RNA/imbalance_all_gene.txt")
@@ -80,4 +81,4 @@ rule all:
         get_input()
 
 
-include: "src/Snakemake/workflow/TSO500_workflow.smk"
+include: "src/Snakemake/workflow/TSO500_workflowfs.smk"

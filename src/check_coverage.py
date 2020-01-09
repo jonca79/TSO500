@@ -71,7 +71,7 @@ gene_regions = gene_regions_temp
 depth_dict = {}
 for region in gene_regions :
     print(region)
-    sample = bam_file.split("/")[-2]
+    sample = bam_file.split("/")[0].split("-ready")[0]
     outfile_name = "DATA/gene_depth_" + sample + ".txt"
     print(sample)
     print(outfile_name)
