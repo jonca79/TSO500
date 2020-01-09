@@ -59,7 +59,7 @@ def get_input():
         input_list.append("Results/RNA/exon_skipping.txt")
 
         '''QC'''
-        input_list.append(["Results/RNA/" + s + "/QC/Housekeeping_gene_coverage.txt" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Housekeeping_gene_coverage.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC.clipping_profile.r" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC.deletion_profile.r" for s in config["RNA_Samples"]])

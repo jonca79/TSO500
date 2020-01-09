@@ -3,8 +3,8 @@
 rule run_TST170:
     output:
         fusions = ["TST170/RNA_" + s + "/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]],
-        bams = ["TST170/RNA_IntermediateFiles/Alignment/" + s + ".bam" for s in config["RNA_Samples"]],
-        bais = ["TST170/RNA_IntermediateFiles/Alignment/" + s + ".bam.bai" for s in config["RNA_Samples"]]
+        bams = ["TST170/" + s + ".bam" for s in config["RNA_Samples"]],
+        bais = ["TST170/" + s + ".bam.bai" for s in config["RNA_Samples"]]
     params:
         runfolder = config["Runfolder"],
         samples = config["RNA_Samples"]
@@ -22,8 +22,8 @@ rule run_TST170:
 
 rule TST170_QC_coverage:
     input:
-        #bam = "TST170/{sample}.bam",
-        bam = ["TST170/" + s + ".bam" for s in config["RNA_Samples"]],
+        bam = "TST170/{sample}.bam",
+        #bam = ["TST170/" + s + ".bam" for s in config["RNA_Samples"]],
         bed = "DATA/TST500C_manifest.bed"
     output:
         coverage = "Results/RNA/{sample}/Housekeeping_gene_coverage.txt"
