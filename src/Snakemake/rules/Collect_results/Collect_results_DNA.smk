@@ -40,19 +40,18 @@ rule copy_mv_TS0500:
         samples = config["DNA_Samples"]
     run:
         import subprocess
+        subprocess.call("mkdir DNA_TSO500/", shell=True)
+        subprocess.call("mkdir DNA_TSO500/Fastq/", shell=True)
         for sample in params.samples :
             subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("mv TSO500/Logs_Intermediates/FastqGeneration/" + sample + "/* DNA_TSO500/Fastq/" + sample + "/", shell=True)
         subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Msi/ DNA_TSO500/Msi/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/StitchedReads/ DNA_TSO500/StitchedReads/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/RunQc/ DNA_TSO500/RunQc/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/VariantCaller/ DNA_TSO500/VariantCaller/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
-        subprocess.call("cp -r TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
-        #TSO500/Logs_Intermediates/Msi TSO500/Results TSO500/Logs_Intermediates/StitchedReads TSO500/Logs_Intermediates/RunQc TSO500/Logs_Intermediates/VariantCaller
+        subprocess.call("mv TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
+        subprocess.call("mv TSO500/Logs_Intermediates/Msi/ DNA_TSO500/Msi/", shell=True)
+        subprocess.call("mv TSO500/Logs_Intermediates/StitchedReads/ DNA_TSO500/StitchedReads/", shell=True)
+        subprocess.call("mv TSO500/Logs_Intermediates/RunQc/ DNA_TSO500/RunQc/", shell=True)
+        subprocess.call("mv TSO500/Logs_Intermediates/VariantCaller/ DNA_TSO500/VariantCaller/", shell=True)
+
 
 rule copy_bam:
     input:

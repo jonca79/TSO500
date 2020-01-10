@@ -81,4 +81,4 @@ rule all:
         get_input()
 
 
-include: "src/Snakemake/workflow/TSO500_workflowfs.smk"
+include: "src/Snakemake/workflow/TSO500_workflow.smk"
