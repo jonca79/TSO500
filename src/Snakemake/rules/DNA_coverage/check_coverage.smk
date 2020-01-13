@@ -2,7 +2,7 @@
 
 rule check_DNA_coverage:
     input:
-        bam = "final/bam/{sample}-ready.bam"
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam"
     output:
         coverage = "Results/DNA/{sample}/QC/Low_coverage_positions.txt"
     run:

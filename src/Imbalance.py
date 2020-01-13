@@ -6,8 +6,8 @@ bam_files = sys.argv[1:]
 
 gene_files = ["ALK", "NRG1", "RET", "NTRK3", "NTRK1", "NTRK2", "ROS1"]
 #gene_files = ["ALK", "NRG1", "RET", "NTRK3"]
-outfile = open("Results/RNA/imbalance_all_gene.txt", "w")
-outfile2 = open("Results/RNA/imbalance_called_gene.txt", "w")
+outfile = open("Results/RNA/Imbalance/imbalance_all_gene.txt", "w")
+outfile2 = open("Results/RNA/Imbalance/imbalance_called_gene.txt", "w")
 outfile.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\tImbalance\n")
 outfile2.write("Sample\tgene\t3'/5'-ratio\tCoverage\tNorm_Coverage\n")
 
@@ -215,7 +215,7 @@ outfile.close()
 outfile2.close()
 
 for gene in gene_files :
-    outfile3 = open("Results/RNA/imbalance_" + gene + "_exons.txt", "w")
+    outfile3 = open("Results/RNA/Imbalance/imbalance_" + gene + "_exons.txt", "w")
     outfile3.write("Sample")
     for exon in exon_result_dict[bam][gene][0] :
         outfile3.write("\t" + exon[0])

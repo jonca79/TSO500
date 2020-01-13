@@ -51,9 +51,9 @@ rule run_bcbio:
         config = "config.yaml",
         bcbio_moriarty_config = "DATA/bcbio_system_Moriarty.yaml"
     output:
-        bams = ["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]],
-        bais = ["final/bam/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
-        vcf = ["final/vcf/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
+        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]],
+        bais = ["final/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]],
+        vcf = ["final/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
     params:
         bcbio_nr_cores = str(bcbio_cores)
     shell:
@@ -61,7 +61,7 @@ rule run_bcbio:
 
 rule fix_BcBio_res_map:
     input:
-        bams = ["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]]
+        bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]]
     output:
         multiqc_report = "Results/DNA/multiqc_report.html",
         vcf = ["DNA_BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
@@ -76,7 +76,10 @@ rule fix_BcBio_res_map:
         for sample in params.samples :
             #subprocess.call("mkdir BcBio/vcf_files/" + sample + "/", shell=True)
             subprocess.call("mkdir DNA_BcBio/QC_files/" + sample + "/", shell=True)
-            subprocess.call("mv -r final/" + sample + "/qc/ DNA_BcBio/QC_files/" + sample + "/QC/ ", shell=True)
+            subprocess.call("mv final/" + sample + "/qc/ DNA_BcBio/QC_files/" + sample + "/QC/ ", shell=True)
+            subprocess.call("mv final/" + sample + "/*.bam DNA_BcBio/bam_files/" + sample + "/ ", shell=True)
+            subprocess.call("rm final/" + sample + "/*.bam.bai", shell=True)
             subprocess.call("mv final/" + sample + "/* DNA_BcBio/vcf_files/" + sample + "/ ", shell=True)
+
         subprocess.call("cp -r final/*/multiqc/ DNA_BcBio/QC_files/", shell=True)
         subprocess.call("cp DNA_BcBio/QC_files/multiqc/multiqc_report.html Results/DNA/multiqc_report.html", shell=True)

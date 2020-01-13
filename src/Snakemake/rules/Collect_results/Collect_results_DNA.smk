@@ -44,6 +44,7 @@ rule copy_mv_TS0500:
         subprocess.call("mkdir DNA_TSO500/Fastq/", shell=True)
         for sample in params.samples :
             subprocess.call("cp TSO500/Results/" + sample + "_BiomarkerReport.txt Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("mkdir DNA_TSO500/Fastq/" + sample + "/", shell=True)
             subprocess.call("mv TSO500/Logs_Intermediates/FastqGeneration/" + sample + "/* DNA_TSO500/Fastq/" + sample + "/", shell=True)
         subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/", shell=True)
         subprocess.call("mv TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
@@ -53,19 +54,19 @@ rule copy_mv_TS0500:
         subprocess.call("mv TSO500/Logs_Intermediates/VariantCaller/ DNA_TSO500/VariantCaller/", shell=True)
 
 
-rule copy_bam:
+rule index_bam:
     input:
-        bam = "final/bam/{sample}-ready.bam"
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam"
         #bai = "final/{sample}/{sample}-ready.bam.bai"
     output:
         #bam = "Results/DNA/{sample}/{sample}-ready.bam",
         #bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
-        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
+        #bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
     run:
         #shell("cp {input.bam} {output.bam}")
         #shell("cp {input.bai} {output.bai}")
-        shell("mv {input.bam} {output.bam}")
+        #shell("mv {input.bam} {output.bam}")
         shell("samtools index {input.bam}")
 
 rule copy_CNV:

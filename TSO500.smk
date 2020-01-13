@@ -15,8 +15,8 @@ def get_input():
 
         '''Bcbio'''
         #input_list.append("config.yaml")
-        input_list.append(["final/bam/" + s + "-ready.bam" for s in config["DNA_Samples"]])
-        input_list.append(["final/vcf/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]])
+        input_list.append(["DNA_BcBio/bam_files/" + s + "-ready.bam" for s in config["DNA_Samples"]])
+        input_list.append(["DNA_BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]])
         input_list.append("Results/DNA/multiqc_report.html")
 
         '''Variant filtering'''
@@ -44,7 +44,7 @@ def get_input():
         '''TST170'''
         input_list.append("SampleSheet.csv")
         input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
-        input_list.append(["RNA_TST170/" + s + ".bam" for s in config["RNA_Samples"]])
+        input_list.append(["RNA_TST170/bam_files/" + s + ".bam" for s in config["RNA_Samples"]])
 
         '''Fusions'''
         input_list.append(["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])
@@ -52,8 +52,8 @@ def get_input():
         input_list.append(["Results/RNA/" + s + "/Fusions/" + s + ".Arriba.fusions.pdf" for s in config["RNA_Samples"]])
 
         '''Imbalance'''
-        input_list.append("Results/RNA/imbalance_all_gene.txt")
-        input_list.append("Results/RNA/imbalance_called_gene.txt")
+        input_list.append("Results/RNA/Imbalance/imbalance_all_gene.txt")
+        input_list.append("Results/RNA/Imbalance/imbalance_called_gene.txt")
 
         '''Exon skipping'''
         input_list.append("Results/RNA/exon_skipping.txt")

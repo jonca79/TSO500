@@ -12,9 +12,9 @@ junction_files = sys.argv[2:]
 #                 "R-19-65SJ.out.tab", "R4_S10SJ.out.tab", "R6_S12SJ.out.tab", "BMS-37SJ.out.tab", "NTRK_29511SJ.out.tab", "R18-226SJ.out.tab", "R-19-120SJ.out.tab",
 #                 "R-19-164SJ.out.tab", "R-19-19SJ.out.tab", "R-19-29SJ.out.tab", "R3_S9SJ.out.tab", "R5_S11SJ.out.tab", "R7_S13SJ.out.tab"]
 
-outfile = open("Results/RNA/exon_skipping.txt", "w")
+outfile = open("Results/RNA/Exon_skipping/exon_skipping.txt", "w")
 outfile.write("Sample\tGene\tChrom\tStart_pos\tEnd_pos\tratio_not_skipped_vs_skipped(<0.05)\tskipped_exons\n")
-outfile2 = open("Results/RNA/exon_skipping_details.txt", "w")
+outfile2 = open("Results/RNA/Exon_skipping/exon_skipping_details.txt", "w")
 outfile2.write("Sample\tGene\tChrom\tStart_pos\tEnd_pos\texon\tsplit_reads_in\tsplit_reads_out\tratio_not_skipped_vs_skipped\n")
 
 
