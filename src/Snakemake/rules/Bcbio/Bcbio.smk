@@ -64,7 +64,8 @@ rule fix_BcBio_res_map:
         bams = ["final/" + s + "/" + s + "-ready.bam" for s in config["DNA_Samples"]]
     output:
         multiqc_report = "Results/DNA/multiqc_report.html",
-        vcf = ["DNA_BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]]
+        vcf = ["DNA_BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]],
+        bams = ["DNA_BcBio/bam_files/" + s + "-ready.bam" for s in config["DNA_Samples"]]
     params:
         samples = config["DNA_Samples"]
     run:
