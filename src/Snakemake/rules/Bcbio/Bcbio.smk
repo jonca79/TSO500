@@ -69,16 +69,13 @@ rule fix_BcBio_res_map:
     params:
         samples = config["DNA_Samples"]
     run:
-        shell("mkdir DNA_BcBio/ && "
-            "mkdir DNA_BcBio/bam_files/ && "
-            #"mkdir BcBio/vcf_files/ && "
-            "mkdir DNA_BcBio/QC_files/ && ")
+        shell("mkdir DNA_BcBio/QC_files/")
         import subprocess
         for sample in params.samples :
             #subprocess.call("mkdir BcBio/vcf_files/" + sample + "/", shell=True)
             subprocess.call("mkdir DNA_BcBio/QC_files/" + sample + "/", shell=True)
             subprocess.call("mv final/" + sample + "/qc/ DNA_BcBio/QC_files/" + sample + "/QC/ ", shell=True)
-            subprocess.call("mv final/" + sample + "/*.bam DNA_BcBio/bam_files/" + sample + "/ ", shell=True)
+            subprocess.call("mv final/" + sample + "/*.bam DNA_BcBio/bam_files/", shell=True)
             subprocess.call("rm final/" + sample + "/*.bam.bai", shell=True)
             subprocess.call("mv final/" + sample + "/* DNA_BcBio/vcf_files/" + sample + "/ ", shell=True)
 

@@ -16,6 +16,7 @@ def get_input():
         '''Bcbio'''
         #input_list.append("config.yaml")
         input_list.append(["DNA_BcBio/bam_files/" + s + "-ready.bam" for s in config["DNA_Samples"]])
+        input_list.append(["DNA_BcBio/bam_files/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
         input_list.append(["DNA_BcBio/vcf_files/" + s + "/" + s + "-ensemble.vcf.gz" for s in config["DNA_Samples"]])
         input_list.append("Results/DNA/multiqc_report.html")
 

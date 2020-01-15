@@ -22,7 +22,8 @@ rule intron_filter:
 rule ffpe_filter:
     input:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
-        bam = "DNA_BcBio/bam_files/{sample}-ready.bam"
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
+        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
     output:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf"
     shell:

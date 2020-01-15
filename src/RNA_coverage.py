@@ -23,7 +23,7 @@ for gene in genes :
     coverage_list = []
     for region in regions :
         region = region[0] + ":" + region[1] + "-" + region[2]
-        sample = bam_file.split("/")[-2]
+        sample = bam_file.split("/")[-1].split(".bam")[0]
         cov_outfile_name = "DATA/RNA_gene_depth_" + sample + ".txt"
         print("samtools depth -a -r " + region + " " + bam_file + " > " + cov_outfile_name)
         subprocess.call("samtools depth -a -r " + region + " " + bam_file + " > " + cov_outfile_name, shell=True)
