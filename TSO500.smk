@@ -21,8 +21,8 @@ def get_input():
         input_list.append("Results/DNA/multiqc_report.html")
 
         '''Variant filtering'''
-        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf" for s in config["DNA_Samples"]])
-        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.vcf" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf.gz" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.vcf.gz" for s in config["DNA_Samples"]])
 
         '''CNV'''
         input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
@@ -33,6 +33,7 @@ def get_input():
 
         '''QC'''
         input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/QC/All_coverage_positions.txt" for s in config["DNA_Samples"]])
 
         '''Collect results'''
         #input_list.append(["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])

@@ -8,9 +8,11 @@ infiles = ["Mutations_Colon_20171219.csv", "Mutations_Lung_20190211.csv", "Mutat
 
 bam_file = sys.argv[1]
 outfile = open(sys.argv[2], "w")
+outfile2 = open(sys.argv[3], "w")
 
 
 outfile.write("#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_synta\tReport\tcomment\tExon\tAccession_number\tCoverage\tPosition\n")
+outfile2.write("#Chr\tStart_hg19\tEnd_hg19\tGene\tCDS_mut_syntax\tAA_mut_synta\tReport\tcomment\tExon\tAccession_number\tCoverage\tPosition\n")
 
 
 '''Find positions to report and gene regions to analyse'''
@@ -71,7 +73,7 @@ gene_regions = gene_regions_temp
 depth_dict = {}
 for region in gene_regions :
     print(region)
-    sample = bam_file.split("/")[0].split("-ready")[0]
+    sample = bam_file.split("/")[-1].split("-ready")[0]
     outfile_name = "DATA/gene_depth_" + sample + ".txt"
     print(sample)
     print(outfile_name)
@@ -88,5 +90,9 @@ for region in gene_regions :
                 for info in inv_pos[key] :
                     outfile.write(info + "\t")
                 outfile.write(str(coverage) + "\t" + pos + "\n")
+            for info in inv_pos[key] :
+                outfile2.write(info + "\t")
+            outfile2.write(str(coverage) + "\t" + pos + "\n")
     depth_file.close()
 outfile.close()
+outfile2.close()

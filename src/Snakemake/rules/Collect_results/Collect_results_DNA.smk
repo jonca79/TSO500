@@ -24,12 +24,20 @@ rule ffpe_filter:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
         bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
+    params:
+        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
+        vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf"
     output:
-        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf"
+        gvcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz",
+        gvcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf.gz"
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
-        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {output.vcf}"
-        #"java -jar SOBDetector/SOBDetector_v1.0.1.jar {input.vcf} --input-bam {input.bam} --input-type VCF --output-variants {output.vcf}"
+        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf} && "
+        "bgzip {params.vcf_ffpe} && "
+        "tabix {output.gvcf_ffpe} && "
+        "bgzip {params.vcf} && "
+        "tabix {output.gvcf}"
+
 
 rule copy_mv_TS0500:
     input:
@@ -81,5 +89,7 @@ rule copy_CNV:
     run:
         import subprocess
         for sample in params.DNA_samples :
-            subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/CNV/", shell=True)
+            #subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/CNV/", shell=True)
+            subprocess.call("grep \"sample_path\" CNV_results/relevant_cnv.txt > Results/DNA/" + sample + "/CNV/relevant_cnv.txt", shell=True)
+            subprocess.call("grep \"" + sample + "\" CNV_results/relevant_cnv.txt >> Results/DNA/" + sample + "/CNV/relevant_cnv.txt", shell=True)
             subprocess.call("cp CNV_results/" + sample + "*.png " + "Results/DNA/" + sample + "/CNV/", shell=True)
