@@ -73,6 +73,7 @@ def get_input():
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC.junction_plot.r" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC.geneBodyCoverage.r" for s in config["RNA_Samples"]])
         input_list.append(["Results/RNA/" + s + "/QC/RSeQC.FPKM.xls" for s in config["RNA_Samples"]])
+        input_list.append("Results/RNA/Bam_stats.txt")
 
         '''Collect results'''
         #input_list.append(["Arriba_results/" + s + "/IGV_copy_done.txt" for s in config["RNA_Samples"]])

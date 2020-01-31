@@ -9,6 +9,14 @@ rule bam_stat:
     shell:
         "bam_stat.py -i {input.bam} > {output.stats}"
 
+rule collect_bam_stat:
+    input:
+        stat_files = ["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["DNA_Samples"]]
+    output:
+        stat_file = "Results/RNA/Bam_stats.txt"
+    shell:
+        "collect_bam_stat.py {output.stat_file} {input.stat_files}"
+
 rule clipping_profile:
     input:
         bam = "STAR/{sample}Aligned.sortedByCoord.out.bam"
@@ -89,14 +97,16 @@ rule inner_distance:
     output:
         R_script = "Results/RNA/{sample}/QC/RSeQC.inner_distance_plot.r",
         pdf = "Results/RNA/{sample}/QC/RSeQC.inner_distance_plot.pdf",
-        data = "Results/RNA/{sample}/QC/RSeQC.inner_distance.txt",
+        #data = "Results/RNA/{sample}/QC/RSeQC.inner_distance.txt"
         data_freq = "Results/RNA/{sample}/QC/RSeQC.inner_distance_freq.txt"
     singularity:
         "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
-        outprefix = "Results/RNA/{sample}/QC/RSeQC"
+        outprefix = "Results/RNA/{sample}/QC/RSeQC",
+        data = "Results/RNA/{sample}/QC/RSeQC.inner_distance.txt"
     shell:
-        "inner_distance.py -i {input.bam} -o {params.outprefix} -r {input.bed}"
+        "inner_distance.py -i {input.bam} -o {params.outprefix} -r {input.bed} && "
+        "rm {params.data}"
 
 rule read_distribution:
     input:
@@ -114,9 +124,9 @@ rule junction_annotation:
         bam = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bed = "DATA/hg19_RefSeq.bed"
     output:
-        bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed",
+        bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed.gz",
         xls = "Results/RNA/{sample}/QC/RSeQC.junction.xls",
-        interactive_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed",
+        interact_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed.gz",
         #pdf1 = "Results/RNA/{sample}/QC/RSeQC.junction_plot.pdf",
         R_script = "Results/RNA/{sample}/QC/RSeQC.junction_plot.r",
         pdf2 = "Results/RNA/{sample}/QC/RSeQC.splice_events.pdf",
@@ -124,9 +134,13 @@ rule junction_annotation:
     singularity:
         "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
-        outprefix = "Results/RNA/{sample}/QC/RSeQC"
+        outprefix = "Results/RNA/{sample}/QC/RSeQC",
+        interact_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed"
+        bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed
     shell:
-        "junction_annotation.py -i {input.bam} -o {params.outprefix} -r {input.bed}"
+        "junction_annotation.py -i {input.bam} -o {params.outprefix} -r {input.bed} && "
+        "gzip {params.interact_bed} && "
+        "gzip {params.bed}"
 
 rule geneBody_coverage:
     input:
