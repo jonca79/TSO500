@@ -22,7 +22,7 @@ def get_input():
 
         '''Variant filtering'''
         input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf.gz" for s in config["DNA_Samples"]])
-        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.vcf.gz" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.tsv.gz" for s in config["DNA_Samples"]])
 
         '''CNV'''
         input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
