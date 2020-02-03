@@ -25,13 +25,16 @@ rule ffpe_filter:
         bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
     params:
+        vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.temp.vcf"
         vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf"
     output:
         gvcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz",
         gvcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.vcf.gz"
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
-        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe} && "
+        "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "
+        "python Add_FFPE_column_to_vcf.py {params.vcf_ffpe_temp} {params.vcf_ffpe} && "
+        "rm {params.vcf_ffpe_temp} && "
         "bgzip {params.vcf_ffpe} && "
         "tabix {output.gvcf_ffpe} && "
         "bgzip {input.vcf} && "
