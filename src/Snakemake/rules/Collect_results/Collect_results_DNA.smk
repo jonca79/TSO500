@@ -25,7 +25,7 @@ rule ffpe_filter:
         bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
     params:
-        vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.temp.vcf"
+        vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.temp.vcf",
         vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.tsv"
     output:
         gvcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz",
