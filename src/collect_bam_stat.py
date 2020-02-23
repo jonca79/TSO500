@@ -1,4 +1,6 @@
 
+import sys
+
 outfile = open(sys.argv[1], "w")
 infiles = sys.argv[2:]
 
