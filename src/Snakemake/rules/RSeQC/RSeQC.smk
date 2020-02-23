@@ -15,7 +15,7 @@ rule collect_bam_stat:
     output:
         stat_file = "Results/RNA/Bam_stats.txt"
     shell:
-        "src/collect_bam_stat.py {output.stat_file} {input.stat_files}"
+        "python src/collect_bam_stat.py {output.stat_file} {input.stat_files}"
 
 rule clipping_profile:
     input:
