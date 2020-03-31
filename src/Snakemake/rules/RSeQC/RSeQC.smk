@@ -11,11 +11,11 @@ rule bam_stat:
 
 rule collect_bam_stat:
     input:
-        stat_files = ["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["DNA_Samples"]]
+        stat_files = ["Results/RNA/" + s + "/QC/RSeQC_bam_stat.txt" for s in config["RNA_Samples"]]
     output:
         stat_file = "Results/RNA/Bam_stats.txt"
     shell:
-        "collect_bam_stat.py {output.stat_file} {input.stat_files}"
+        "python src/collect_bam_stat.py {output.stat_file} {input.stat_files}"
 
 rule clipping_profile:
     input:
@@ -135,8 +135,8 @@ rule junction_annotation:
         "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RSeQC_3.0.1.simg"
     params:
         outprefix = "Results/RNA/{sample}/QC/RSeQC",
-        interact_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed"
-        bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed
+        interact_bed = "Results/RNA/{sample}/QC/RSeQC.junction.Interact.bed",
+        bed = "Results/RNA/{sample}/QC/RSeQC.junction.bed"
     shell:
         "junction_annotation.py -i {input.bam} -o {params.outprefix} -r {input.bed} && "
         "gzip {params.interact_bed} && "
