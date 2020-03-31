@@ -85,7 +85,8 @@ for bam in bam_files :
             coverage /= 3.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")
-            if imbalance > 3.0 and coverage > 40.0 :
+            #if imbalance > 3.0 and coverage > 40.0 :
+            if imbalance > 25.0 and coverage > 40.0 :
                 outfile.write("Imbalance" + "\n")
                 outfile2.write(sample + "\t" + gene + "\t" + str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\n")
             else :

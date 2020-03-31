@@ -93,5 +93,5 @@ rule copy_CNV:
         for sample in params.DNA_samples :
             #subprocess.call("cp CNV_results/relevant_cnv.txt Results/DNA/" + sample + "/CNV/", shell=True)
             subprocess.call("grep \"sample_path\" CNV_results/relevant_cnv.txt > Results/DNA/" + sample + "/CNV/relevant_cnv.txt", shell=True)
-            subprocess.call("grep \"" + sample + "\" CNV_results/relevant_cnv.txt >> Results/DNA/" + sample + "/CNV/relevant_cnv.txt", shell=True)
-            subprocess.call("cp CNV_results/" + sample + "*.png " + "Results/DNA/" + sample + "/CNV/", shell=True)
+            subprocess.call("grep \"" + sample + "-ready.cns\" CNV_results/relevant_cnv.txt >> Results/DNA/" + sample + "/CNV/relevant_cnv.txt", shell=True)
+            subprocess.call("cp CNV_results/" + sample + "-ready*.png " + "Results/DNA/" + sample + "/CNV/", shell=True)
