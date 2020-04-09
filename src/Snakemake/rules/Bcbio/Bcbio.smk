@@ -81,3 +81,21 @@ rule fix_BcBio_res_map:
 
         subprocess.call("cp -r final/*/multiqc/ DNA_BcBio/QC_files/", shell=True)
         subprocess.call("cp DNA_BcBio/QC_files/multiqc/multiqc_report.html Results/DNA/multiqc_report.html", shell=True)
+
+rule Fold_80:
+    input:
+        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
+        bed = "DATA/TST500C_manifest.bed"
+    params:
+        tmp_out = "DNA_BcBio/bam_files/rtg_{sample}/",
+        simg = "/projects/wp4/nobackup/workspace/somatic_dev/singularity/RTG_core.simg"
+    output:
+        res = "Results/DNA/{sample}/QC/Fold-80.txt"
+    threads: 2
+    shell:
+        """
+        set e+
+        singularity exec -B /gluster-storage-volume/ -B /projects/ {params.simg} rtg coverage -T {threads} --bed-regions {input.bed} -o {params.tmp_out} {input.bam}
+        grep Fold {params.tmp_out}/summary.txt > {output.res}
+        exit 0
+        """

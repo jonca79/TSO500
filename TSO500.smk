@@ -34,6 +34,7 @@ def get_input():
         '''QC'''
         input_list.append(["Results/DNA/" + s + "/QC/Low_coverage_positions.txt" for s in config["DNA_Samples"]])
         input_list.append(["Results/DNA/" + s + "/QC/All_coverage_positions.txt" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/QC/Fold-80.txt" for s in config["DNA_Samples"]])
 
         '''Collect results'''
         #input_list.append(["Results/DNA/" + s + "/" + s + "-ready.bam.bai" for s in config["DNA_Samples"]])
