@@ -134,15 +134,15 @@ for bam in bam_files :
         '''NTRK3'''
         if gene == "NTRK3" :
             for d in avg_depth_list :
-                if i <= 13 :
+                if i <= 3 :
                     gene_start += d / bam_dict[bam]
-                elif i >= 2 :
+                elif i >= 14 :
                     gene_end += d / bam_dict[bam]
                 if i >= 14  :
                     coverage += d / bam_dict[bam]
                 i += 1
             gene_end /= 6.0
-            gene_start /= 2.0
+            gene_start /= 3.0
             coverage /= 6.0
             imbalance = gene_end / gene_start
             outfile.write(str(round(imbalance,1)) + "\t" + str(round(coverage*bam_dict[bam],1)) + "\t" + str(round(coverage,1)) + "\t")

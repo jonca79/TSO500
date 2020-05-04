@@ -13,12 +13,11 @@ for line in inbed :
     start_pos = int(lline[1])
     end_pos = int(lline[2])
     region = lline[3]
-    #Skip all variants outside exons but keep all in MET
+    #Skip all variants outside exons but keep all in MET and TERT promoter
     if not (region.find("Exon") != -1 or region.find("MET") != -1 or region.find("TERT_Promoter") != -1) :
         continue
     if region.find("Exon") != -1 and (region.find("Additional") != -1 or region.find("Fusion") != -1 or region.find("Amp") != -1) :
-        if not region.find("TERT_Promoter") != -1 :
-            continue
+        continue
     if chrom not in exon_dict :
         exon_dict[chrom] = []
     exon_dict[chrom].append([start_pos, end_pos])
