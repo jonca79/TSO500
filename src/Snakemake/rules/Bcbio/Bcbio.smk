@@ -93,6 +93,5 @@ rule Fold_80:
         res = "Results/DNA/{sample}/QC/Fold-80.txt"
     threads: 2
     shell:
-        "singularity exec -B /gluster-storage-volume/ -B /projects/ {params.simg} rtg coverage -T {threads} --bed-regions {input.bed} -o {params.tmp_out} {input.bam} || ""
+        "singularity exec -B /gluster-storage-volume/ -B /projects/ {params.simg} rtg coverage -T {threads} --bed-regions {input.bed} -o {params.tmp_out} {input.bam} || "
         "grep Fold {params.tmp_out}/summary.txt > {output.res}"
-        
