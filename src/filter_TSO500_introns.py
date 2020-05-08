@@ -24,7 +24,7 @@ for line in inbed2 :
     end_pos = int(lline[2])
     region = lline[3]
     #Add all variants in MET and TERT promoter
-    if region.find("MET") != -1 or region.find("TERT_Promoter") != -1) :
+    if region.find("MET") != -1 or region.find("TERT_Promoter") != -1 :
         if chrom not in exon_dict :
             exon_dict[chrom] = []
         exon_dict[chrom].append([start_pos, end_pos])
