@@ -12,7 +12,8 @@ rule STAR_arrbia:
     threads: 6
     run:
         import subprocess
-        command = "singularity exec -B /projects/ -B /gluster-storage-volume/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
+        #command = "singularity exec -B /projects/ -B /gluster-storage-volume/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
+        command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "
         command += "STAR "
     	command += "--runThreadN " + str(threads) + " "
     	command += "--genomeDir /projects/wp4/nobackup/workspace/jonas_test/Arriba/references/STAR_index_hs37d5_GENCODE19/ "
