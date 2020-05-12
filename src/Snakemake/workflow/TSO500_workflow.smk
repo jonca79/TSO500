@@ -10,6 +10,7 @@ if config["DNA_Samples"] != "No DNA" :
     include: "../rules/cnvkit/cnvkit.smk"
     include: "../rules/DNA_coverage/check_coverage.smk"
     include: "../rules/Collect_results/Collect_results_DNA.smk"
+    include: "../rules/Mutect2/Mutect2.smk"
 
 if config["RNA_Samples"] != "No RNA" :
     include: "../rules/Illumina_SampleSheets/TST170_SampleSheet.smk"
@@ -21,4 +22,3 @@ if config["RNA_Samples"] != "No RNA" :
     include: "../rules/Illumina_TST170/Illumina_TST170.smk"
     include: "../rules/Collect_results/Collect_results_RNA.smk"
     include: "../rules/RSeQC/RSeQC.smk"
-#include: "../rules/Collect_results/Collect_results.smk"

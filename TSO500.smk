@@ -24,6 +24,9 @@ def get_input():
         input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.vcf.gz" for s in config["DNA_Samples"]])
         input_list.append(["Results/DNA/" + s + "/vcf/" + s + "-ensemble.final.no.introns.ffpe.tsv.gz" for s in config["DNA_Samples"]])
 
+        '''Mutect2 INDEL bams'''
+        input_list.append(["DNA_BcBio/bam_files/Mutect2/" + s + "-ready.indel.bam" for s in config["DNA_Samples"]])
+
         '''CNV'''
         input_list.append(["CNV_calls/" + sample_id + "-ready.cnr" for sample_id in config["DNA_Samples"]])
         input_list.append(["CNV_calls/" + sample_id + "-ready.cns" for sample_id in config["DNA_Samples"]])
