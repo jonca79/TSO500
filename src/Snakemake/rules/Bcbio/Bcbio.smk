@@ -85,7 +85,7 @@ rule fix_BcBio_res_map:
 rule Fold_80:
     input:
         bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
-        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
+        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai",
         bed = "DATA/TST500C_manifest.bed"
     params:
         tmp_out = "DNA_BcBio/bam_files/rtg_{sample}/",
