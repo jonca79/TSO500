@@ -18,7 +18,7 @@ rule Split_bam_bed:
         "python src/Mutect2_bam_regions.py {input.vcf} {input.bam}"
 
 rule Split_bam:
-    input: "
+    input:
         bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
         bed = "Mutect2/{sample}.{chrom}.bed"
     output:
@@ -41,7 +41,7 @@ rule Mutect2:
     output:
         bam = temp("Mutect2/bamout/{sample}-ready.{chrom}.indel.bam"),
         #bai = temp("Mutect2/bamout/{sample}-ready.{chrom}.indel.bam.bai"),
-        vcf = temp("Mutect2/bamout/{sample}-ready.{chrom}.indel.bam.vcf.gz")
+        vcf = temp("Mutect2/bamout/{sample}-ready.{chrom}.indel.bam.vcf")
     run:
         import subprocess
         chrom = input.bam.split(".")[-2]
@@ -49,13 +49,13 @@ rule Mutect2:
         #command_line += "gatk -t Mutect2 -L " + input.bed + " -I:tumor " + input.bam + " -bamout " + output.bam
         #command_line = "/sw/pipelines/bcbio-nextgen/1.0.5/anaconda/bin/gatk -T MuTect2 -L " + input.bed + " -I:tumor " + input.bam + " -bamout " + output.bam
         command_line += "java -Xmx4g -jar /gatk/gatk-package-4.1.4.1-local.jar Mutect2 "
-        command_line += "-L " + input.bed + " -I:tumor " + input.bam + " -bamout " + output.bam
-        command_line += " -drf DuplicateRead "
+        command_line += "-L " + input.bed + " -I " + input.bam + " -bamout " + output.bam
+        command_line += " -DF NotDuplicateReadFilter "
         #command_line += "-ploidy 2 "
         #command_line += "-U LENIENT_VCF_PROCESSING "
         #command_line += "--read_filter BadCigar "
         #command_line += "--read_filter NotPrimaryAlignment "
-        command_line += " -R /data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta > " + output.bam + ".vcf"
+        command_line += " -R /data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta -O " + output.bam + ".vcf"
         print(command_line)
         subprocess.call(command_line, shell=True)
 
