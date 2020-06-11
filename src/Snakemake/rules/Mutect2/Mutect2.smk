@@ -45,7 +45,7 @@ rule Mutect2:
     run:
         import subprocess
         chrom = input.bam.split(".")[-2]
-        command_line = "singularity exec -B /projects -B /data -B /beegfs /projects/wp2/nobackup/Twist_Myeloid/Containers/gatk4.1.4.1.simg "
+        command_line = "singularity exec -B /projects -B /data /projects/wp2/nobackup/Twist_Myeloid/Containers/gatk4.1.4.1.simg "
         #command_line += "gatk -t Mutect2 -L " + input.bed + " -I:tumor " + input.bam + " -bamout " + output.bam
         #command_line = "/sw/pipelines/bcbio-nextgen/1.0.5/anaconda/bin/gatk -T MuTect2 -L " + input.bed + " -I:tumor " + input.bam + " -bamout " + output.bam
         command_line += "java -Xmx4g -jar /gatk/gatk-package-4.1.4.1-local.jar Mutect2 "
