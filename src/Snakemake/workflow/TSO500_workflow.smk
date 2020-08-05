@@ -22,3 +22,4 @@ if config["RNA_Samples"] != "No RNA" :
     include: "../rules/Illumina_TST170/Illumina_TST170.smk"
     include: "../rules/Collect_results/Collect_results_RNA.smk"
     include: "../rules/RSeQC/RSeQC.smk"
+    include: "../rules/Star_fusion/Star-Fusion.smk"
