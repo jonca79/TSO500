@@ -9,7 +9,13 @@
         "n": 1
     },
     "Call_cnv": {"n": 8},
+    "STAR": {"n": 6,
+              "time": "4:00:00"},
     "STAR_arrbia": {"n": 6,
+                    "time": "4:00:00"},
+    "STAR_Fusion": {"n": 6,
+                    "time": "4:00:00"},
+    "Star_fusion_validate": {"n": 2,
                     "time": "4:00:00"},
     "Arriba" : {"n" : 4},
     "demultiplex": {"n" : 16,

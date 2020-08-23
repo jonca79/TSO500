@@ -1,5 +1,5 @@
 
-singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg"
+#singularity: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg"
 
 rule STAR:
     input:
@@ -11,7 +11,7 @@ rule STAR:
     run:
         import subprocess
         command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
-        command += "STAR --genomeDir /gluster-storage-volume/projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Aug152019.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx/ "
+        command += "STAR --genomeDir /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Aug152019.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx/ "
         command += "--readFilesIn " + input.fq1 + " " + input.fq2 + " "
         command += "--outReadsUnmapped None "
         command += "--twopassMode Basic "
@@ -41,35 +41,51 @@ rule STAR_Fusion:
     input:
         alignment = "STAR2/{sample}Chimeric.out.junction"
     output:
-        fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        #fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
+        #fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
+        fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
+        fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
     threads: 6
     shell:
         "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
         "/usr/local/src/STAR-Fusion/STAR-Fusion "
         "--genome_lib_dir /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Aug152019.plug-n-play/ctat_genome_lib_build_dir/ "
         "-J {input.alignment} "
-        "--output_dir Results/RNA/{wildcards.sample}/Fusions/ "
-        "--CPU 6"
+        "--output_dir STAR_fusion/{wildcards.sample}/Fusions/ "
+        "--CPU {threads}"
 
 rule Star_fusion_validate:
     input:
-        fusion = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        fusion = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
         fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
         fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
-        fusion = "Results/RNA/{sample}/Fusions/FI/finspector/finspector.FusionInspector.fusions.abridged.tsv"
+        fusion = "FI/{sample}/Fusions/FI/finspector/finspector.FusionInspector.fusions.abridged.tsv"
     run:
         import subprocess
         command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
-        command += "/usr/local/src/STAR-Fusion/FusionInspector/FusionInspector --fusions Results/RNA/" + wildcards.sample + "/Fusions/star-fusion.fusion_predictions.abridged.tsv "
+        command += "/usr/local/src/STAR-Fusion/FusionInspector/FusionInspector --fusions STAR_fusion/" + wildcards.sample + "/Fusions/star-fusion.fusion_predictions.abridged.tsv "
         command += "--genome_lib /projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Aug152019.plug-n-play/ctat_genome_lib_build_dir/ "
         command += "--left_fq " + input.fq1 + " "
         command += "--right_fq " + input.fq2 + " "
-        command += "--output_dir Results/RNA/" + wildcards.sample + "/Fusions/FI/finspector "
+        command += "--output_dir FI/" + wildcards.sample + "/Fusions/FI/finspector "
         command += "--vis"
         print(command)
         subprocess.call(command, shell=True)
+
+rule Copy_to_results:
+    input:
+        STAR_fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
+        STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        FI = "FI/{sample}/Fusions/FI/finspector/finspector.FusionInspector.fusions.abridged.tsv"
+    output:
+        STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
+        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        FI = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
+    shell:
+        "cp {input.STAR_fusion1} {output.STAR_fusion1} & "
+        "cp {input.STAR_fusion1} {output.STAR_fusion2} & "
+        "cp {input.FI} {output.FI}"
 
 
 
