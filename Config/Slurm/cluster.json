@@ -15,7 +15,7 @@
                     "time": "4:00:00"},
     "STAR_Fusion": {"n": 6,
                     "time": "4:00:00"},
-    "Star_fusion_validate": {"n": 2,
+    "Star_fusion_validate": {"n": 6,
                     "time": "4:00:00"},
     "Arriba" : {"n" : 4},
     "demultiplex": {"n" : 16,
