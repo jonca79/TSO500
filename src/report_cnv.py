@@ -3,6 +3,7 @@ import glob
 import gzip
 import os
 import sys
+import subprocess
 
 
 analysis_type = sys.argv[1]
@@ -12,6 +13,7 @@ cnv_files =  sys.argv[4:-3]
 cnv_ONCOCNV = open(sys.argv[-3])
 cnv_bed_file = open(sys.argv[-2])
 cnv_relevant = open(sys.argv[-1], "w")
+
 
 cnv_event = open("CNV_calls/cnv_raw_event.txt", "w")
 
@@ -180,14 +182,46 @@ cnv_relevant.close()
 '''Create plots'''
 for sample_file in cnv_files :
     sample = sample_file.split(".cns")[0].split("/")[1]
+    sample2 = sample.split("-ready")[0]
     path = sample_file.split("/")[0]
+    vcf = "Results/DNA/" + sample2 + "/vcf/" + sample2 + "-ensemble.final.vcf"
+    os.system("gunzip -c " + vcf + ".gz > " + vcf)
+    vcf_in = open(vcf)
+    vcf_out = open(vcf + ".rs", "w")
+    header = True
+    for line in vcf_in :
+        if header :
+            if line[:2] == "#C" :
+                header = False
+            vcf_out.write(line)
+            continue
+        lline = line.strip().split("\t")
+        rs = lline[2]
+        if rs != "." :
+            AD_index = 0
+            AF_index = 0
+            i = 0
+            for l in lline[8].split(":") :
+                if l == "AD" :
+                    AD_index = i
+                if l == "AF" :
+                    AF_index = i
+                i += 1
+            if len(lline[9].split(":")[AD_index].split(",")) == 2 :
+                if float(lline[9].split(":")[AF_index]) > 0.05 and float(lline[9].split(":")[AF_index]) < 0.95 :
+                    vcf_out.write(line)
+    vcf_in.close()
+    vcf_out.close()
     command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
     command_line += path + "/" + sample + ".cnr "
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-o CNV_results/" + sample + ".png "
+    command_line += "-v " + vcf + ".rs "
     command_line += "--y-min -2 --y-max 2"
     print(command_line)
     os.system(command_line)
+    os.system("rm " + vcf)
+    #os.system("rm " + vcf + ".rs")
 
 cnv_relevant = open(sys.argv[-1])
 header = True
@@ -198,7 +232,9 @@ for line in cnv_relevant :
     lline = line.strip().split("\t")
     print(lline)
     sample = lline[0].split("/")[1].split(".cns")[0]
+    sample2 = sample.split("-ready")[0]
     path = lline[0].split("/")[0]
+    vcf = "Results/DNA/" + sample2 + "/vcf/" + sample2 + "-ensemble.final.vcf.rs"
     gene = lline[2]
     chrom = lline[3]
     #gene_region = lline[4]
@@ -236,6 +272,7 @@ for line in cnv_relevant :
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region1
     command_line += " -g " + gene_string
+    command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene_region1 + " " + gene + "'"
     command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
     print(command_line)
@@ -245,6 +282,7 @@ for line in cnv_relevant :
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region2
     command_line += " -g " + gene_string
+    command_line += " -v " + vcf
     command_line += " --title '" + sample + " " + chrom + " " + gene + "'"
     command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ".png"
     print(command_line)

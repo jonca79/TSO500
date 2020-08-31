@@ -55,7 +55,8 @@ rule Filter_cnv:
         purity = "DATA/Pathological_purity_BMS_validation.txt",
         relevant_genes = "DATA/TSO500_relevant_genes.txt",
         ONCOCNV_events = "CNV_calls/cnv_event.txt",
-        bed_file = "bed/manifest.target.bed"
+        bed_file = "bed/manifest.target.bed",
+        vcf_files = ["Results/DNA/" + sample_id + "/vcf/" + sample_id + "-ensemble.final.vcf.gz" for sample_id in config["DNA_Samples"]]
     output:
         relevant_cnvs = "CNV_results/relevant_cnv.txt",
         cnv_done = "CNV_results/cnv_done.txt"

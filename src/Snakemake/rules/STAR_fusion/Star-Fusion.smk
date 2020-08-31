@@ -17,6 +17,7 @@ rule STAR:
         command += "--twopassMode Basic "
         command += "--readFilesCommand \"gunzip -c\" "
         command += "--outSAMstrandField intronMotif "  # include for potential use with StringTie for assembly
+        command += "--outSAMtype BAM SortedByCoordinate "
         command += "--outSAMunmapped Within "
         command += "--chimSegmentMin 12 "  # ** essential to invoke chimeric read detection & reporting **
         command += "--chimJunctionOverhangMin 12 "
@@ -83,8 +84,8 @@ rule Copy_to_results:
         STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
         FI = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
     shell:
-        "cp {input.STAR_fusion1} {output.STAR_fusion1} & "
-        "cp {input.STAR_fusion1} {output.STAR_fusion2} & "
+        "cp {input.STAR_fusion1} {output.STAR_fusion1} && "
+        "cp {input.STAR_fusion2} {output.STAR_fusion2} && "
         "cp {input.FI} {output.FI}"
 
 
