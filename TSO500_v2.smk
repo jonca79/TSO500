@@ -6,8 +6,9 @@ def get_input():
     if config["DNA_Samples"] != "No DNA" :
         '''Illumina TSO500'''
         input_list.append(config["Sample_sheet"] + ".TSO500.csv")
-        input_list.append(["Results/DNA/MetricsReport.tsv"])
-        input_list.append(["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/MetricsOutput.tsv"])
+        #input_list.append(["Results/DNA/" + s + "/" + s + "_BiomarkerReport.txt" for s in config["DNA_Samples"]])
+        input_list.append(["Results/DNA/" + s + "/" + s + "_CombinedVariantOutput.tsv" for s in config["DNA_Samples"]])
 
         '''Demultiplexning'''
         input_list.append(["fastq/DNA/" + s + "_R1.fastq.gz" for s in config["DNA_Samples"]])
@@ -47,10 +48,12 @@ def get_input():
         input_list.append(["fastq/RNA/" + s + "_R1.fastq.gz" for s in config["RNA_Samples"]])
         input_list.append(["fastq/RNA/" + s + "_R2.fastq.gz" for s in config["RNA_Samples"]])
 
-        '''TST170'''
-        input_list.append("SampleSheet.csv")
-        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
-        input_list.append(["RNA_TST170/bam_files/" + s + ".bam" for s in config["RNA_Samples"]])
+        '''TST170 / TST500'''
+        #input_list.append("SampleSheet.csv")
+        #input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_HighConfidenceVariants.csv" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/MetricsOutput.tsv"])
+        input_list.append(["Results/RNA/" + s + "/Fusions/" + s + "_CombinedVariantOutput.tsv" for s in config["RNA_Samples"]])
+        #input_list.append(["RNA_TSO500/bam_files/" + s + ".bam" for s in config["RNA_Samples"]])
 
         '''Fusions'''
         input_list.append(["STAR/" + s + "Aligned.sortedByCoord.out.bam" for s in config["RNA_Samples"]])

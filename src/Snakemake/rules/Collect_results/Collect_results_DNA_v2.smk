@@ -43,10 +43,10 @@ rule ffpe_filter:
 
 rule copy_mv_TS0500:
     input:
-        TSO500_done = "TSO500/TSO500_done.txt"
+        TSO500_done = "TSO500_done.txt"
     output:
         biomarker = ["Results/DNA/" + s + "/" + s + "_CombinedVariantOutput.tsv" for s in config["DNA_Samples"]],
-        metrics = "Results/DNA/MetricsReport.tsv"
+        metrics = "Results/DNA/MetricsOutput.tsv"
     params:
         samples = config["DNA_Samples"]
     run:
@@ -54,12 +54,12 @@ rule copy_mv_TS0500:
         subprocess.call("mkdir DNA_TSO500/", shell=True)
         subprocess.call("mkdir DNA_TSO500/Fastq/", shell=True)
         for sample in params.samples :
-            subprocess.call("cp TSO500/Results/" + sample + "_CombinedVariantOutput.tsv Results/DNA/" + sample + "/", shell=True)
+            subprocess.call("cp TSO500/Results/" + sample + "/" + sample + "_CombinedVariantOutput.tsv Results/DNA/" + sample + "/", shell=True)
             subprocess.call("mkdir DNA_TSO500/Fastq/" + sample + "/", shell=True)
             subprocess.call("mv TSO500/Logs_Intermediates/FastqGeneration/" + sample + "/* DNA_TSO500/Fastq/" + sample + "/", shell=True)
             subprocess.call("mv TSO500/Logs_Intermediates/StitchedReads/" + sample + "/*.bam* DNA_TSO500/StitchedReads/", shell=True)
             subprocess.call("mv TSO500/Logs_Intermediates/VariantCaller/" + sample + "/" + sample + ".genome.vcf DNA_TSO500/VariantCaller/", shell=True)
-        subprocess.call("cp TSO500/Results/MetricsReport.tsv Results/DNA/", shell=True)
+        subprocess.call("cp TSO500/Results/MetricsOutput.tsv Results/DNA/", shell=True)
         #subprocess.call("mv TSO500/Logs_Intermediates/Tmb/ DNA_TSO500/Tmb/", shell=True)
         #subprocess.call("mv TSO500/Logs_Intermediates/Msi/ DNA_TSO500/Msi/", shell=True)
         subprocess.call("mv TSO500/Logs_Intermediates/RunQc/ DNA_TSO500/RunQc/", shell=True)
