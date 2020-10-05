@@ -1,8 +1,8 @@
 
 rule all:
     input:
-        bai = "bam/{sample}.bam.bai",
-        bai2 = "DNA_bam/{sample}-ready.bam.bai",
+        bai = "bam/20-1539.bam.bai",
+        bai2 = "DNA_bam/20-1539-ready.bam.bai",
         vcf1 = "mutect2/20-1539.mutect2.normalized.vcf.gz.tbi",
         vcf2 = "freebayes/20-1539.freebayes.normalized.vcf.gz.tbi",
         vcf3 = "varscan/20-1539.varscan.normalized.vcf.gz.tbi",
@@ -13,7 +13,7 @@ rule all:
         fastqc = "qc/20-1539/20-1539_Stat_table.csv",
         html = "qc/20-1539/20-1539-sort_fastqc.xml",
         zip = "qc/20-1539/20-1539-sort_fastqc.zip",
-        qc1 = "qc/{sample}/{sample}.samtools-stats.txt",
-        qc2 = "qc/{sample}/{sample}.HsMetrics.txt",
-        qc3 = "qc/{sample}/{sample}_stats_mqc.csv",
+        qc1 = "qc/20-1539/20-1539.samtools-stats.txt",
+        qc2 = "qc/20-1539/20-1539.HsMetrics.txt",
+        qc3 = "qc/20-1539/20-1539_stats_mqc.csv",
         qc4 = "Results/batchQC_stats_mqc.json"
