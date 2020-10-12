@@ -9,13 +9,16 @@ rule all:
 
 rule Create_TSO500_yaml:
     input:
-        run_info = "RunParameters.xml"
+        run_info = "RunParameters.xml",
+        config = "Config/Pipeline/configdefaults201012.yaml"
     output:
         TSO500_yaml = "TSO500.yaml",
         TC = "DATA/Pathological_purity_BMS_validation.txt"
     run:
         import glob
         import os
+        import subprocess
+        subprocess.call("cp " + input.config + " " + output.TSO500_yaml, shell=True)
         run_folder_name = ""
         run_info_file = open(input.run_info)
         for line in run_info_file :
@@ -55,7 +58,7 @@ rule Create_TSO500_yaml:
                     print("Error: wrong sample type: " + sample_type)
                     quit()
                 i += 1
-        outfile = open(output.TSO500_yaml, "w")
+        outfile = open(output.TSO500_yaml, "a")
         outfile2 = open(output.TC, "w")
         #outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + KG_runname + "/\n\n")
         outfile.write("Runfolder: /projects/wp1/nobackup/ngs/klinik/INBOX/" + run_folder_name + "/\n\n")
