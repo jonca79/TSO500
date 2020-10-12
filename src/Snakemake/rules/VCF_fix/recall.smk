@@ -51,7 +51,7 @@ rule filter_recall:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3 src/Snakemake/rules/Bcbio/filter_recall.py {input} {output} {params}) &> {log}"
+        "(python3 src/filter_recall.py {input} {output} {params}) &> {log}"
 
 rule index_filterRecall:
     input:

@@ -9,7 +9,7 @@ rule fixAF:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3.6 src/Snakemake/rules/Bcbio/fix_af.py {input} {output}) &> {log}"
+        "(python3.6 src/fix_af.py {input} {output}) &> {log}"
 
 localrules: bgzipCallers
 rule bgzipCallers:

@@ -61,7 +61,7 @@ rule getStatsforMqc:
         config["singularity"]["python"]
     shell:
         #"(python3.6 get_stats.py {input.picardDup} {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
-        "(python3.6 src/Snakemake/rules/Bcbio/get_stats.py {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
+        "(python3.6 src/get_stats.py {input.picardMet} {input.samtools} {input.multiQCheader} {input.cartool} {wildcards.sample} {output.sample} {input.batch} && touch {output.batchTmp}) &> {log}"
 
 rule sortBatchStats:
     input:
@@ -77,4 +77,4 @@ rule sortBatchStats:
     singularity:
         config["singularity"]["python"]
     shell:
-        "(python3.6 src/Snakemake/rules/Bcbio/sortBatchStats.py {input.batchUnsorted} {input.SampleSheetUsed} {output.batch}) &> {log}"
+        "(python3.6 src/sortBatchStats.py {input.batchUnsorted} {input.SampleSheetUsed} {output.batch}) &> {log}"
