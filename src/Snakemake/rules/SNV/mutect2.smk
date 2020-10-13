@@ -68,7 +68,7 @@ rule Merge_vcf:
     input:
         vcf = expand("mutect2/filteringStats/{{sample}}.{chr}.mutect2.vcf.gz", chr=chrom_list)
     output:
-        "mutect2/{sample}.mutect2.SB.vcf"
+        temp("mutect2/{sample}.mutect2.SB.vcf")
     log:
         "logs/variantCalling/mutect2/merge_vcf_{sample}.log"
     singularity:
@@ -91,8 +91,7 @@ rule mutect2HardFilter:
         vcf = "mutect2/{sample}.mutect2.SB.vcf",
         wait = "mutect2/{sample}.SB.done"
     output:
-        #temp("mutect2/{sample}-sort-cumi.mutect2.weirdAF.vcf")
-        "mutect2/{sample}.mutect2.fixAF.vcf"
+        temp("mutect2/{sample}.mutect2.fixAF.vcf")
     log:
         "logs/variantCalling/mutect2/{sample}.hardFilt.log"
     singularity:

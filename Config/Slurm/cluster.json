@@ -22,7 +22,6 @@
                     "time" : "4:00:00"},
     "fix_fastq_run_DNA_R1": {"time" : "3:00:00"},
     "fix_fastq_run_DNA_R2": {"time" : "3:00:00"},
-    "run_bcbio" : {"time" : "48:00:00"},
     "run_TSO500" : {"n" : 16,
                     "time" : "32:00:00"},
     "run_TST170" : {"n" : 16,
@@ -30,5 +29,15 @@
     "ffpe_filter" : {"n" : 4,
                     "time" : "4:00:00"},
     "cutadapt" : {"n" : 8,
+                  "time" : "4:00:00"},
+    "bwa_mem" : {"n" : 8,
+                  "time" : "4:00:00"},
+    "bwa_mem_fgbio" : {"n" : 8,
+                  "time" : "4:00:00"},
+    "fastqc_bam" : {"n" : 8,
+                  "time" : "4:00:00"},
+    "vardict" : {"n" : 4,
+                  "time" : "4:00:00"},
+    "fgbio" : {"n" : 2,
                   "time" : "4:00:00"}
 }

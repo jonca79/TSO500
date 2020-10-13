@@ -2,8 +2,8 @@
 
 rule check_DNA_coverage:
     input:
-        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
-        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
+        bam = "DNA_bam/{sample}-ready.bam",
+        bai = "DNA_bam/{sample}-ready.bam.bai"
     output:
         coverage = "Results/DNA/{sample}/QC/Low_coverage_positions.txt",
         coverage2 = "Results/DNA/{sample}/QC/All_coverage_positions.txt"

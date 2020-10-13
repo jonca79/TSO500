@@ -6,8 +6,7 @@ rule vardict:
         ref = config["reference"]["ref"],
         bed = config["bed"]["bedfile"]
     output:
-        #temp("vardict/{sample}.vardict.vcf")
-        "vardict/{sample}.vardict.vcf"
+        temp("vardict/{sample}.vardict.vcf")
     params:
         vardict_singularity = config["singularity"]["execute"] + config["singularity"]["vardict"],
         bcftools_singularity = config["singularity"]["execute"] + config["singularity"]["bcftools"],

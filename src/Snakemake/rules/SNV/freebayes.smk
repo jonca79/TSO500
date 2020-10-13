@@ -9,8 +9,6 @@ rule freebayes:
         temp("freebayes/{sample}.freebayes.unsort.vcf")  # either .vcf or .bcf
     log:
         "logs/variantCalling/freebayes/{sample}.log"
-    #singularity:
-    #    "/projects/wp2/nobackup/Twist_Myeloid/Containers/freebayes-1.3.1-0.simg"
     params:
         freebayes_singularity = config["singularity"]["execute"] + config["singularity"]["freebayes"],
         bcftools_singularity = config["singularity"]["execute"] + config["singularity"]["bcftools"],
@@ -27,8 +25,7 @@ rule sortFreebayes:
     input:
         "freebayes/{sample}.freebayes.unsort.vcf"
     output:
-        #temp("freebayes/{sample}.freebayes.fixAF.vcf")
-        "freebayes/{sample}.freebayes.fixAF.vcf"
+        temp("freebayes/{sample}.freebayes.fixAF.vcf")
     singularity:
         config["singularity"]["bcftools"]
     log:

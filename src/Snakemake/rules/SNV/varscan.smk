@@ -6,8 +6,7 @@ rule varscan:
         ref = config["reference"]["ref"],
         bed = config["bed"]["bedfile"]
     output:
-        #temp("varscan/{sample}.varscan.vcf")
-        "varscan/{sample}.varscan.vcf"
+        temp("varscan/{sample}.varscan.vcf")
     params:
         samtools_singularity = config["singularity"]["execute"] + config["singularity"]["samtools"],
         varscan_singularity = config["singularity"]["execute"] + config["singularity"]["varscan"],
@@ -15,8 +14,6 @@ rule varscan:
         varscan = "--min-coverage 5 --p-value 0.98 --strand-filter 1 --min-var-freq 0.01 --output-vcf --variants"
     log:
         "logs/variantCalling/varscan/{sample}.log"
-    threads:
-        1
     shell:
         "({params.samtools_singularity} samtools mpileup -f {input.ref} {params.mpileup} -l {input.bed} {input.bam} |"
         " {{ ifne grep -v -P '\t0\t\t$' || true; }} |"
@@ -34,7 +31,7 @@ rule sortVarscan:
     input:
         "varscan/{sample}.varscan.vcf"
     output:
-        "varscan/{sample}.varscan.fixAF.vcf"
+        temp("varscan/{sample}.varscan.fixAF.vcf")
     singularity:
         config["singularity"]["bcftools"]
     log:

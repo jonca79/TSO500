@@ -10,7 +10,7 @@ rule recall:
         tabix = expand("{method}/{{sample}}.{method}.normalized.vcf.gz.tbi",  method=methods),
         ref = config["reference"]["ref"]
     output:
-        vcf = "recall/{sample}.unsorted.vcf.gz"
+        temp(vcf = "recall/{sample}.unsorted.vcf.gz")
     params:
         support =  "1", #"{support}" ,
         order = "mutect2,vardict,varscan,freebayes" #,Manta" #Make sure that the order is correct! Order of methods in configfile
@@ -38,7 +38,6 @@ rule sort_recall:
         #"(gunzip {input} && bgzip {params.vcf} &&
         "(tabix {input} && bcftools sort -o {output.vcf} -O z {input} && tabix {output.vcf} ) &> {log}"
 
-##Nya regeler
 rule filter_recall:
     input:
         "recall/{sample}.all.vcf.gz"

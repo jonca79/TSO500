@@ -28,7 +28,7 @@ rule normalizeAll:
     shell:
         "(vt normalize -n -r {input.ref} -o {output} {input.vcf} ) &> {log}"
 
-rule indexDecomp:
+rule indexNormalize:
     input:
         vcf = "{method}/{sample}.{method}.normalized.vcf.gz" #"variantCalls/callers/{method}/{sample}.{method}.decomposed.vcf.gz" #[m+"/{sample}."+m+".vcf" for m in config["methods"]]
     output:

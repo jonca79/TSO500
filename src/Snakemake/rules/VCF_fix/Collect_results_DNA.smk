@@ -5,7 +5,7 @@ localrules: copy_biomarker, copy_CNV
 rule ensemble_filter:
     input:
         #vcf = "DNA_BcBio/vcf_files/{sample}/{sample}-ensemble.vcf.gz"
-        vcf = "recall/vcf_files/{sample}/{sample}-ensemble.vcf.gz"
+        vcf = "recall/{sample}.ensemble.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.vcf.gz"
     run:
@@ -23,8 +23,8 @@ rule intron_filter:
 rule ffpe_filter:
     input:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
-        bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
-        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
+        bam = "DNA_bam/{sample}-ready.bam",
+        bai = "DNA_bam/{sample}-ready.bam.bai"
     params:
         vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.temp.vcf",
         vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.tsv"
@@ -65,21 +65,6 @@ rule copy_mv_TS0500:
         subprocess.call("mv TSO500/Logs_Intermediates/RunQc/ DNA_TSO500/RunQc/", shell=True)
         subprocess.call("mv TSO500/Logs_Intermediates/VariantCaller/ DNA_TSO500/VariantCaller/", shell=True)
 
-
-rule index_bam:
-    input:
-        bam = "DNA_BcBio/bam_files/{sample}-ready.bam"
-        #bai = "final/{sample}/{sample}-ready.bam.bai"
-    output:
-        #bam = "Results/DNA/{sample}/{sample}-ready.bam",
-        #bai = "Results/DNA/{sample}/{sample}-ready.bam.bai"
-        #bam = "DNA_BcBio/bam_files/{sample}-ready.bam",
-        bai = "DNA_BcBio/bam_files/{sample}-ready.bam.bai"
-    run:
-        #shell("cp {input.bam} {output.bam}")
-        #shell("cp {input.bai} {output.bai}")
-        #shell("mv {input.bam} {output.bam}")
-        shell("samtools index {input.bam}")
 
 rule copy_CNV:
     input:
