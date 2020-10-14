@@ -23,6 +23,7 @@ if  method == "varscan":
     new_header.info.add("AF","A","Float","Allel count divided on depth (Quality of bases: Phred score >= 15)")
 
 
+
 #start new vcf with the new_header
 vcf_out = VariantFile(sys.argv[2], 'w', header=new_header)
 

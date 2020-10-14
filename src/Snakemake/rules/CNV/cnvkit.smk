@@ -60,8 +60,10 @@ rule Filter_cnv:
     output:
         relevant_cnvs = "CNV_results/relevant_cnv.txt",
         cnv_done = "CNV_results/cnv_done.txt"
+    #singularity:
+    #    "/projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif"
     shell:
-        "source /projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit_venv/bin/activate; "
+        #"source /projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit_venv/bin/activate; "
         "python src/report_cnv.py "
         "TSO500 "
         "{input.purity} "

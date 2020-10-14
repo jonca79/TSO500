@@ -212,7 +212,8 @@ for sample_file in cnv_files :
                     vcf_out.write(line)
     vcf_in.close()
     vcf_out.close()
-    command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    #command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif cnvkit.py scatter "
     command_line += path + "/" + sample + ".cnr "
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-o CNV_results/" + sample + ".png "
@@ -267,7 +268,8 @@ for line in cnv_relevant :
                     gene_string += exon
                     #gene_string += gene_name
     bed.close()
-    command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    #command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif cnvkit.py scatter "
     command_line += path + "/" + sample + ".cnr "
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region1
@@ -277,7 +279,8 @@ for line in cnv_relevant :
     command_line += " -o CNV_results/" + sample + "_" + gene + "_" + chrom + ":" + gene_region1 + ".png"
     print(command_line)
     os.system(command_line)
-    command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    #command_line = "/projects/wp4/nobackup/workspace/jonas_test/CNV_runs/20190909_JA_refernce/CNV/Helena/cnvkit-0.9.5/cnvkit.py scatter "
+    command_line = "singularity exec /projects/wp4/nobackup/workspace/somatic_dev/singularity/cnvkit_0.9.7--py_1.sif cnvkit.py scatter "
     command_line += path + "/" + sample + ".cnr "
     command_line += "-s " + path + "/" + sample + ".cns "
     command_line += "-c " + chrom + ":" + gene_region2
