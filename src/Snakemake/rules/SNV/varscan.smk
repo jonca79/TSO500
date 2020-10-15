@@ -16,8 +16,8 @@ rule varscan:
         "logs/variantCalling/varscan/{sample}.log"
     shell:
         "({params.samtools_singularity} samtools mpileup -f {input.ref} {params.mpileup} -l {input.bed} {input.bam} |"
-        " {{ ifne grep -v -P '\t0\t\t$' || true; }} |"
-        " ifne {params.varscan_singularity} java -jar /opt/varscan/VarScan.jar mpileup2cns {params.varscan} |" #" --vcf-sample-list sample_list.txt ""
+        " grep -v -P '\t0\t\t$' |"
+        " {params.varscan_singularity} java -jar /opt/varscan/VarScan.jar mpileup2cns {params.varscan} |" #" --vcf-sample-list sample_list.txt ""
         #" | /sw/pipelines/bcbio-nextgen/1.0.5/anaconda/bin/py -x 'bcbio.variation.vcfutils.add_contig_to_header(x, "/data/ref_genomes/bcbio-nextgen/sam/hg19.with.mt.fasta")'
         #" | /sw/pipelines/bcbio-nextgen/1.0.5/anaconda/bin/py -x 'bcbio.variation.varscan.fix_varscan_output(x)' | "
         " awk -F$'\t' -v OFS='\t' '{{if ($0 !~ /^#/) gsub(/[KMRYSWBVHDXkmryswbvhdx]/, \"N\", $4) }} {{print}}' | "

@@ -10,7 +10,7 @@ rule recall:
         tabix = expand("{method}/{{sample}}.{method}.normalized.vcf.gz.tbi",  method=methods),
         ref = config["reference"]["ref"]
     output:
-        temp(vcf = "recall/{sample}.unsorted.vcf.gz")
+        vcf = temp("recall/{sample}.unsorted.vcf.gz")
     params:
         support =  "1", #"{support}" ,
         order = "mutect2,vardict,varscan,freebayes" #,Manta" #Make sure that the order is correct! Order of methods in configfile

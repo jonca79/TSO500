@@ -14,7 +14,7 @@ rule bwa_mem:
         index = config["reference"]["ref"],
         extra = r"-c 250 -M -R '@RG\tID:{sample}\tSM:{sample}\tPL:illumina\tPU:{sample}' -v 1",
         # sort = "samtools",             # Can be 'none', 'samtools' or 'picard'.
-        sort_order = "coordinate" # Can be 'queryname' or 'coordinate'.
+        sort_order = "coordinate", # Can be 'queryname' or 'coordinate'.
         # sort_extra = ""            # Extra args for samtools/picard.
         tmp_dir = "tmpfile=bam/{sample}"
     threads: 8

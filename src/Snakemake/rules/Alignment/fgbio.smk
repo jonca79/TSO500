@@ -4,8 +4,8 @@ rule fgbio:
         bam = "bam/{sample}-sort.bam",
         ref = config["reference"]["ref"]
     output:
-        temp(fq1 = "fastq_temp/{sample}-cumi-R1.fq.gz"),
-        temp(fq2 = "fastq_temp/{sample}-cumi-R2.fq.gz"),
+        fq1 = temp("fastq_temp/{sample}-cumi-R1.fq.gz"),
+        fq2 = temp("fastq_temp/{sample}-cumi-R2.fq.gz"),
         qc = "qc/{sample}/{sample}_fgbio.txt"
     params:
         bam_tmp = "bam/{sample}-cumi-1-bamtofastq-tmp",
