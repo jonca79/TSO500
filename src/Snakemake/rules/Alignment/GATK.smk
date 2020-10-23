@@ -69,7 +69,7 @@ rule GATK_realign_step1:
     params:
         "--interval_set_rule INTERSECTION -L {chr} -l INFO -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
-        "logs/gatk3/realign_{sample}_{chr}.log"
+        "logs/gatk3/realign_step1_{sample}_{chr}.log"
     singularity:
         config["singularity"]["gatk3"]
     shell:
@@ -88,13 +88,13 @@ rule GATK_realign_step2:
     params:
         "-L {chr} -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
-        "logs/gatk3/realign_{sample}_{chr}.log"
+        "logs/gatk3/realign_step2_{sample}_{chr}.log"
     singularity:
         config["singularity"]["gatk3"]
     threads:
         10
     shell:
-        "(java -jar-Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
+        "(java -jar -Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
 
 
 rule Merge_bam_gatk3:
