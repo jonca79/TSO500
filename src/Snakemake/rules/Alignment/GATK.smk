@@ -11,9 +11,9 @@ rule GATK_recal_step1:
     output:
         grp = "bam/{sample}-sort-cumi-recal.grp"
     params:
-        "--interval_set_rule INTERSECTION -nct 16 -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
+        "--interval_set_rule INTERSECTION -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
-        "logs/gatk3/recal_step2_{sample}.log"
+        "logs/gatk3/recal_step1_{sample}.log"
     singularity:
         config["singularity"]["gatk3"]
     threads:
