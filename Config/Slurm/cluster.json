@@ -42,9 +42,11 @@
                   "time" : "4:00:00"},
     "GATK_recal_step1" : {"n" : 10,
                   "time" : "8:00:00"},
-    "GATK_recal_step2" : {"n" : 10,
+    "GATK_recal_step2" : {"n" : 2,
                   "time" : "8:00:00"},
-    "fgbio" : {"n" : 2,
-                  "time" : "4:00:00"}
+    "GATK_realign_step1" : {"n" : 10,
+                  "time" : "8:00:00"},
+    "GATK_realign_step2" : {"n" : 10,
+                  "time" : "8:00:00"}
 
 }

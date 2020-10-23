@@ -23,7 +23,7 @@ rule GATK_recal_step1:
     threads:
         10
     shell:
-        ("java -jar -Xms1000m -Xmx50960m /usr/GenomeAnalysisTK.jar -T BaseRecalibrator -nt {threads} -I {input.bam} -o {output.grp} -R {input.ref} --knownSites {input.dbsnp} -L {input.bed} {params}) &> {log}
+        "(java -jar -Xms1000m -Xmx50960m /usr/GenomeAnalysisTK.jar -T BaseRecalibrator -nct {threads} -I {input.bam} -o {output.grp} -R {input.ref} --knownSites {input.dbsnp} -L {input.bed} {params}) &> {log}"
 
 
 rule GATK_recal_step2:
@@ -41,9 +41,9 @@ rule GATK_recal_step2:
     singularity:
         config["singularity"]["gatk3"]
     threads:
-        10
+        2
     shell:
-        ("java -jar -Xms1000m -Xmx91728m /usr/GenomeAnalysisTK.jar -T PrintReads -nt {threads} -R {input.ref} -I {input.bam} -BQSR {input.grp} -o {output.bam} {params}) &> {log}
+        "(java -jar -Xms1000m -Xmx91728m /usr/GenomeAnalysisTK.jar -T PrintReads -nct {threads} -R {input.ref} -I {input.bam} -BQSR {input.grp} -o {output.bam} {params}) &> {log}"
 
 
 rule Split_bam_realign:
@@ -62,14 +62,14 @@ rule Split_bam_realign:
         "(samtools view -b {input.bam} {wildcards.chr} > {output.bam} && samtools index {output.bam}) &> {log}"
 
 
-rule GATK_realign:
+rule GATK_realign_step1:
     input:
         bam = "bam/realign_temp/{sample}-sort-cumi-recal.{chr}.bam",
         bai = "bam/realign_temp/{sample}-sort-cumi-recal.{chr}.bam.bai",
         ref = config["reference"]["ref"],
         indels = "/data/ref_genomes/hg19/variation/Mills_and_1000G_gold_standard.indels.vcf.gz" #config
     output:
-        bam = "bam/{sample}-sort-cumi-recal-realign.{chr}.bam"
+        intervals = "bam/{sample}-sort-cumi-recal-realign.{chr}.intervals"
     params:
         "--interval_set_rule INTERSECTION -L {chr} -l INFO -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
@@ -77,9 +77,34 @@ rule GATK_realign:
     singularity:
         config["singularity"]["gatk3"]
     threads:
-        "?"
+        10
     shell:
-        ("java -jar -Xms500m -Xmx3500m /usr/GenomeAnalysisTK.jar -T RealignerTargetCreator -R {input.ref} -I {input.bam} --known {input.indels} -o {output.bam} {params}) &> {log}
+        "(java -jar -Xms500m -Xmx3500m /usr/GenomeAnalysisTK.jar -nct {threads} -T RealignerTargetCreator -R {input.ref} -I {input.bam} --known {input.indels} -o {output.intervals} {params}) &> {log}"
+
+-T RealignerTargetCreator -I 20-1539-sort-cumi-recal-chr5_170818286_180915260-prep-prealign.bam
+-R /data/ref_genomes/bcbio-nextgen/sam/hg19.with.mt.fasta
+-o 20-1539-sort-cumi-recal-chr5_170818286_180915260-prep-prealign-realign.intervals
+
+
+rule GATK_realign_step2:
+    input:
+        bam = "bam/realign_temp/{sample}-sort-cumi-recal.{chr}.bam",
+        bai = "bam/realign_temp/{sample}-sort-cumi-recal.{chr}.bam.bai",
+        ref = config["reference"]["ref"],
+        indels = "/data/ref_genomes/hg19/variation/Mills_and_1000G_gold_standard.indels.vcf.gz", #config
+        intervals = "bam/{sample}-sort-cumi-recal-realign.{chr}.intervals",
+    output:
+        bam = "bam/{sample}-sort-cumi-recal-realign.{chr}.bam"
+    params:
+        "-L {chr} -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
+    log:
+        "logs/gatk3/realign_{sample}_{chr}.log"
+    singularity:
+        config["singularity"]["gatk3"]
+    threads:
+        10
+    shell:
+        "(java -jar-Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
 
 
 rule Merge_bam_gatk3:

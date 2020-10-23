@@ -14,6 +14,7 @@ if config["DNA_Samples"] != "No DNA" :
 
     include: "../rules/Alignment/bwa-mem.smk"
     include: "../rules/Alignment/fgbio.smk"
+    include: "../rules/Alignment/GATK.smk"
     include: "../rules/SNV/freebayes.smk"
     include: "../rules/SNV/mutect2.smk"
     include: "../rules/SNV/vardict_T.smk"
