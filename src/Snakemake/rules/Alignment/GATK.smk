@@ -9,7 +9,7 @@ rule GATK_recal_step1:
         bed = config["bed"]["bedfile"],
         ref = config["reference"]["ref"]
     output:
-        grp = "bam/20-1539-sort-cumi-recal.grp"
+        grp = "bam/{sample}-sort-cumi-recal.grp"
     params:
         "--interval_set_rule INTERSECTION -nct 16 -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
@@ -24,7 +24,7 @@ rule GATK_recal_step1:
 
 rule GATK_recal_step2:
     input:
-        grp = "bam/20-1539-sort-cumi-recal.grp",
+        grp = "bam/{sample}-sort-cumi-recal.grp",
         bam = "bam/{sample}-sort-cumi.bam",
         bai = "bam/{sample}-sort-cumi.bam.bai",
         ref = config["reference"]["ref"]
