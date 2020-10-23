@@ -72,10 +72,8 @@ rule GATK_realign_step1:
         "logs/gatk3/realign_{sample}_{chr}.log"
     singularity:
         config["singularity"]["gatk3"]
-    threads:
-        10
     shell:
-        "(java -jar -Xms500m -Xmx3500m /usr/GenomeAnalysisTK.jar -nct {threads} -T RealignerTargetCreator -R {input.ref} -I {input.bam} --known {input.indels} -o {output.intervals} {params}) &> {log}"
+        "(java -jar -Xms500m -Xmx3500m /usr/GenomeAnalysisTK.jar -T RealignerTargetCreator -R {input.ref} -I {input.bam} --known {input.indels} -o {output.intervals} {params}) &> {log}"
 
 
 rule GATK_realign_step2:
