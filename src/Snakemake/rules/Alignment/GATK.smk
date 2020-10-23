@@ -91,10 +91,8 @@ rule GATK_realign_step2:
         "logs/gatk3/realign_step2_{sample}_{chr}.log"
     singularity:
         config["singularity"]["gatk3"]
-    threads:
-        10
     shell:
-        "(java -jar -Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --targetIntervals {input.intervals} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
+        "(java -jar -Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -T IndelRealigner -R {input.ref} -I {input.bam} --targetIntervals {input.intervals} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
 
 
 rule Merge_bam_gatk3:
