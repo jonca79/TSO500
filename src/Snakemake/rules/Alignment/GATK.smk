@@ -94,7 +94,7 @@ rule GATK_realign_step2:
     threads:
         10
     shell:
-        "(java -jar -Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
+        "(java -jar -Xms909m -Xmx6363m /usr/GenomeAnalysisTK.jar -nct {threads} -T IndelRealigner -R {input.ref} -I {input.bam} --targetIntervals {input.intervals} --knownAlleles {input.indels} -o {output.bam} {params}) &> {log}"
 
 
 rule Merge_bam_gatk3:
