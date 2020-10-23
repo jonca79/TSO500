@@ -86,7 +86,7 @@ rule GATK_realign_step2:
         indels = "/data/ref_genomes/hg19/variation/Mills_and_1000G_gold_standard.indels.vcf.gz", #config
         intervals = "bam/{sample}-sort-cumi-recal-realign.{chr}.intervals",
     output:
-        bam = "bam/{sample}-sort-cumi-recal-realign.{chr}.bam"
+        bam = "bam/realign_temp/{sample}-sort-cumi-recal-realign.{chr}.bam"
     params:
         "-L {chr} -U LENIENT_VCF_PROCESSING --read_filter BadCigar --read_filter NotPrimaryAlignment"
     log:
