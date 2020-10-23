@@ -1,8 +1,4 @@
 
-
-
-
-
 chrom_list = ['chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16','chr17','chr18','chr19','chr20','chr21','chr22','chrX','chrY']
 
 rule GATK_recal_step1:
@@ -80,10 +76,6 @@ rule GATK_realign_step1:
         10
     shell:
         "(java -jar -Xms500m -Xmx3500m /usr/GenomeAnalysisTK.jar -nct {threads} -T RealignerTargetCreator -R {input.ref} -I {input.bam} --known {input.indels} -o {output.intervals} {params}) &> {log}"
-
--T RealignerTargetCreator -I 20-1539-sort-cumi-recal-chr5_170818286_180915260-prep-prealign.bam
--R /data/ref_genomes/bcbio-nextgen/sam/hg19.with.mt.fasta
--o 20-1539-sort-cumi-recal-chr5_170818286_180915260-prep-prealign-realign.intervals
 
 
 rule GATK_realign_step2:
