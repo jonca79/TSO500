@@ -25,7 +25,8 @@ rule bwa_mem_fgbio:
     input:
         reads = ["fastq_temp/{sample}-cumi-R1.fq.gz", "fastq_temp/{sample}-cumi-R2.fq.gz"]
     output:
-        "DNA_bam/{sample}-ready.bam"
+        #"DNA_bam/{sample}-ready.bam"
+        "bam/{sample}-sort-cumi.bam"
     log:
         "logs/map/bwa/{sample}.log"
     params:   #-M
@@ -34,7 +35,7 @@ rule bwa_mem_fgbio:
         # sort = "samtools",             # Can be 'none', 'samtools' or 'picard'.
         sort_order = "coordinate"  # Can be 'queryname' or 'coordinate'.
         # sort_extra = ""            # Extra args for samtools/picard.
-    threads: 8
+    threads: 10
     singularity:
         config["singularity"]["bwa"]
     shell:
@@ -43,9 +44,11 @@ rule bwa_mem_fgbio:
 
 rule samtools_index_fgbio:
     input:
-        "DNA_bam/{sample}-ready.bam"
+        #"DNA_bam/{sample}-ready.bam"
+        "bam/{sample}-sort-cumi.bam"
     output:
-        "DNA_bam/{sample}-ready.bam.bai"
+        #"DNA_bam/{sample}-ready.bam.bai"
+        "bam/{sample}-sort-cumi.bam.bai"
     log:
         "logs/map/samtools_index/{sample}-ready.log"
     singularity:

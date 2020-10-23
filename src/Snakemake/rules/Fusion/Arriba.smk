@@ -9,7 +9,7 @@ rule STAR_arrbia:
         bams = "STAR/{sample}Aligned.sortedByCoord.out.bam",
         bais = "STAR/{sample}Aligned.sortedByCoord.out.bam.bai",
         junctions = "STAR/{sample}SJ.out.tab"
-    threads: 6
+    threads: 5
     run:
         import subprocess
         #command = "singularity exec -B /projects/ -B /gluster-storage-volume/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg "

@@ -7,7 +7,7 @@ rule STAR:
         fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
         alignment = "STAR2/{sample}Chimeric.out.junction"
-    threads: 6
+    threads: 5
     run:
         import subprocess
         command = "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
@@ -47,7 +47,7 @@ rule STAR_Fusion:
         #fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
         fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
         fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv"
-    threads: 6
+    threads: 5
     shell:
         "singularity exec -B /projects/ /projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg "
         "/usr/local/src/STAR-Fusion/STAR-Fusion "

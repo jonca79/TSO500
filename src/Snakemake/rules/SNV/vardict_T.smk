@@ -14,7 +14,7 @@ rule vardict:
     log:
         "logs/variantCalling/vardict/{sample}.log"
     threads:
-        4
+        5
     shell:
         "({params.vardict_singularity} /opt/VarDict-1.5.1/bin/VarDict -G {input.ref} -f {params.af} -I 200 -th {threads} -N '{wildcards.sample}' -z -c 1 -S 2 -E 3 -g 4 -Q 10 -F 0x700 -b {input.bam} {input.bed} |"
         " {params.vardict_singularity} /opt/VarDict/teststrandbias.R |"

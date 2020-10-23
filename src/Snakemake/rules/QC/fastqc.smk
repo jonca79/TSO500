@@ -11,7 +11,7 @@ rule fastqc_bam:
         outdir = "qc/{sample}/"
     log:
         "logs/qc/fastqc/{sample}-sort.log"
-    threads: 8
+    threads: 10
     singularity:
         config["singularity"]["fastqc"]
     shell:

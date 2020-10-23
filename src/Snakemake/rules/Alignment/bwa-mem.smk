@@ -17,7 +17,7 @@ rule bwa_mem:
         sort_order = "coordinate", # Can be 'queryname' or 'coordinate'.
         # sort_extra = ""            # Extra args for samtools/picard.
         tmp_dir = "tmpfile=bam/{sample}"
-    threads: 8
+    threads: 10
     #singularity:
     #    "/projects/wp2/nobackup/Twist_Myeloid/Containers/bwa0.7.17-samtools-1.9.simg" #bwa 0.7.17, samtools 1.9, picard 2.20.11
     shell:
