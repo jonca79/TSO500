@@ -65,7 +65,7 @@ rule getStatsforMqc:
 
 rule sortBatchStats:
     input:
-        SampleSheetUsed = config["Sample_sheet"],
+        SampleSheetUsed = config["Sample_sheet"], #Does not work for RNA!
         batchUnsorted = "qc/batchQC_stats_unsorted.csv",
         batchDone = expand("qc/{sample}/{sample}_batchStats.done", sample = config["DNA_Samples"])
     output:

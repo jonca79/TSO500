@@ -4,33 +4,47 @@ localrules: copy_biomarker, copy_CNV
 
 rule ensemble_filter:
     input:
-        #vcf = "DNA_BcBio/vcf_files/{sample}/{sample}-ensemble.vcf.gz"
         vcf = "recall/{sample}.ensemble.vcf.gz"
     output:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.vcf.gz"
-    run:
-        shell("python3 src/filter_by_num_callers.py -v {input.vcf} -d | bgzip > {output.vcf}")
-        shell("tabix {output.vcf}")
+    shell:
+        "python3 src/filter_by_num_callers.py -v {input.vcf} -d | bgzip > {output.vcf} && "
+        "tabix {output.vcf}"
 
 rule intron_filter:
     input:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.vcf.gz"
     output:
+        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz"
+    params:
         vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf"
     shell :
-        "python3 src/filter_TSO500_introns.py {input.vcf}"
+        "python3 src/filter_TSO500_introns.py {input.vcf} &&"
+        "bgzip {params.vcf} && "
+        "tabix {output.vcf}"
+
+rule AD_filter:
+    input:
+        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz"
+    output:
+        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.vcf"
+    singularity:
+        "/projects/wp2/nobackup/Twist_Myeloid/Containers/bcftools-1.9--8.simg"
+    shell :
+        "bcftools filter -O v -o {output.vcf} -e \"FORMAT/AD<20\" {input.vcf}"
+
 
 rule ffpe_filter:
     input:
-        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf",
+        vcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.vcf",
         bam = "DNA_bam/{sample}-ready.bam",
         bai = "DNA_bam/{sample}-ready.bam.bai"
     params:
-        vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.temp.vcf",
-        vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.tsv"
+        vcf_ffpe_temp = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.ffpe.temp.vcf",
+        vcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.ffpe.tsv"
     output:
-        gvcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.vcf.gz",
-        gvcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.ffpe.tsv.gz"
+        gvcf = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.vcf.gz",
+        gvcf_ffpe = "Results/DNA/{sample}/vcf/{sample}-ensemble.final.no.introns.AD20.ffpe.tsv.gz"
     shell:
         #"module load oracle-jdk-1.8/1.8.0_162 && "
         "java -jar SOBDetector/SOBDetector_v1.0.1.jar --input-type VCF --input-variants {input.vcf} --input-bam {input.bam} --output-variants {params.vcf_ffpe_temp} && "

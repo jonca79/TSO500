@@ -31,18 +31,17 @@
     "cutadapt" : {"n" : 10,
                   "time" : "4:00:00"},
     "bwa_mem" : {"n" : 10,
-                  "time" : "4:00:00"},
+                  "time" : "6:00:00"},
     "bwa_mem_fgbio" : {"n" : 10,
-                  "time" : "4:00:00"},
+                  "time" : "6:00:00"},
     "fastqc_bam" : {"n" : 10,
                   "time" : "4:00:00"},
     "vardict" : {"n" : 5,
-                  "time" : "4:00:00"},
+                  "time" : "2:00:00"},
     "fgbio" : {"n" : 2,
-                  "time" : "4:00:00"},
+                  "time" : "6:00:00"},
     "GATK_recal_step1" : {"n" : 10,
                   "time" : "2:00:00"},
     "GATK_recal_step2" : {"n" : 2,
-                  "time" : "4:00:00"},
-    "GATK_realign_step2" : {"time" : "8:00:00"}
+                  "time" : "4:00:00"}
 }

@@ -19,11 +19,12 @@ with open(SampleSheetUsed, 'r') as file:
     lines = [line.strip() for line in file]
     for line in lines:
         if startReading == 1: ##Once reached [Data]
-            samples.append(line.split(',')[1])
+            if line.find(",DNA,") != -1: #Only use DNA samples and not RNA, which also removes header
+                samples.append(line.split(',')[1])
         if line.startswith("[Data]"):
             startReading = 1
 # samples.pop() #Remove any empty are there empty line at end?!
-samples = samples[1:] #Remove header from SampleSheetUsed
+#samples = samples[1:] #Remove header from SampleSheetUsed
 sampleSheetSamples = [string for string in samples if string != ""]#Remove empty fields
 #Remove any HD829 because other pipeline
 # HDindices = [i for i, x in enumerate(sampleSheetSamples) if x.startswith("HD829")]
