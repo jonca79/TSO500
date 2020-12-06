@@ -1,5 +1,12 @@
 reference:
     ref: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta"
+    STAR: "/projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/ref_genome.fa.star.idx/"
+    STAR_fusion: "/projects/wp4/nobackup/workspace/jonas_test/STAR-Fusion/references/GRCh37_gencode_v19_CTAT_lib_Apr032020.plug-n-play/ctat_genome_lib_build_dir/"
+    Arriba_index: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references/STAR_index_hs37d5_GENCODE19/"
+    Arriba_ref: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references/hs37d5.fa"
+    Arriba_gtf: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references/GENCODE19.gtf"
+    Arriba_blacklist: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references/blacklist_hg19_hs37d5_GRCh37_2018-11-04.tsv"
+    Arriba_refdir: "/projects/wp4/nobackup/workspace/jonas_test/Arriba/references"
 
 configfiles:
     multiqc: "DATA/multiqc_config.yaml"
@@ -33,6 +40,8 @@ singularity:
     vardict: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/vardict_java_1.5.1.simg"
     #varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.2.simg"
     varscan: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/varscan_2.4.3-0.simg"
+    STAR_fusion: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/star-fusion.v1.7.0.simg"
+    Arriba: "/projects/wp4/nobackup/workspace/somatic_dev/singularity/Arriba.simg"
 
 cartool:
     cov: "100 200 1000"
