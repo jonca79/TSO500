@@ -72,8 +72,9 @@ def get_input():
         input_list.append(["STAR2/" + s + "Chimeric.out.junction" for s in config["RNA_Samples"]])
         #input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.tsv" for s in config["RNA_Samples"]])
         #input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.coding_effect.abridged.tsv" for s in config["RNA_Samples"]])
-        input_list.append(["Results/RNA/" + s + "/Fusions/Fusion_inspector" for s in config["RNA_Samples"]])
+        #input_list.append(["Results/RNA/" + s + "/Fusions/Fusion_inspector" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv" for s in config["RNA_Samples"]])
+        input_list.append(["Results/RNA/" + s + "/Fusions/Fusion_inspector_web.html" for s in config["RNA_Samples"]])
         #input_list.append(["Results/RNA/" + s + "/Fusions/finspector.FusionInspector.fusions.abridged.tsv" for s in config["RNA_Samples"]])
 
 
