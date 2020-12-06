@@ -111,7 +111,7 @@ rule Copy_to_results:
         html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html"
     output:
         #STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.tsv",
+        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.coding_effect.abridged.tsv",
         #FI = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
         html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html"
     shell:
