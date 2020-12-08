@@ -64,7 +64,7 @@ rule STAR_Fusion:
         fq1 = "fastq/RNA/{sample}_R1.fastq.gz",
         fq2 = "fastq/RNA/{sample}_R2.fastq.gz"
     output:
-        fusion = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.coding_effect.abridged.tsv",
+        fusion = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv",
         html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html"
     params:
         ref = config["reference"]["STAR_fusion"]
@@ -106,12 +106,12 @@ rule STAR_Fusion:
 rule Copy_to_results:
     input:
         #STAR_fusion1 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.coding_effect.abridged.tsv",
+        STAR_fusion2 = "STAR_fusion/{sample}/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv",
         #FI = "FI/{sample}/Fusions/FI/finspector/finspector.FusionInspector.fusions.abridged.tsv"
         html = "STAR_fusion/{sample}/Fusions/FusionInspector-inspect/finspector.fusion_inspector_web.html"
     output:
         #STAR_fusion1 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.tsv",
-        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.coding_effect.abridged.tsv",
+        STAR_fusion2 = "Results/RNA/{sample}/Fusions/star-fusion.fusion_predictions.abridged.coding_effect.tsv",
         #FI = "Results/RNA/{sample}/Fusions/finspector.FusionInspector.fusions.abridged.tsv"
         html = "Results/RNA/{sample}/Fusions/Fusion_inspector_web.html"
     shell:
